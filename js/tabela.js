@@ -46,7 +46,8 @@ function gerarTabela(){
 
 
 	let dados = dadosVariavel.value.split(',')
-	let dadosSeparados = []
+	let dadosSeparados = dados.filter((este, i) => dados.indexOf(este) === i)
+	console.log(dadosSeparados)
 
 	
 	// Separando Elementos inseridos
@@ -61,10 +62,14 @@ function gerarTabela(){
 	
 	}, {} )
 
+	
+	
+	
 
 	let totPor = 0
 	let fac = 0
 	let facP = 0
+	
 	//pega o total separado
 	Object.keys(sep).forEach( item => {
 		totPor += sep[item]
@@ -201,16 +206,16 @@ function gerarTabela(){
 			min += ic
 		}
 		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td> <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
-		
+	
+
 		// Fim tabela continua
+
 	}
 
-	//  console.log(item)
-	//  console.log(sep)
-	 console.log(dados)
-
 	 //Criando Graficos 
-	 
+	 chartTeste = Object.values(sep) //Parametros usados para compor o gráfico
+	 console.log(chartTeste)
+
 	 // Contexto do gráfico
 	 const ctx = document.getElementById('oChartDasBonecas')
 	 Chart.defaults.scale.ticks.beginAtZero = true
@@ -220,12 +225,11 @@ function gerarTabela(){
 	  	type:'pie',
 	  	//Especificações
 	  	data:{
-	  		labels:['teste'],
+	  		labels:dadosSeparados,
 	  		datasets: [
 	  			{
-	  				label: 'points',
-	  				backgroundColor: ['#f1c40f','#e67e22','#16a085','#2980b9'],
-	  				data: [10]
+	  				label: NomeTabela,
+	  				data:chartTeste
 	  			}
 	  		]
 
@@ -234,8 +238,6 @@ function gerarTabela(){
 
 	
 	 
-
-
 }
 
 // Interação com o botão calcular 
