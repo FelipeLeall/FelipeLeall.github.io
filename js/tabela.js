@@ -48,6 +48,7 @@ function gerarTabela(){
 	let dados = dadosVariavel.value.split(',')
 	let dadosSeparados = []
 
+	
 	// Separando Elementos inseridos
 	let sep = dados.reduce( (obj, item) => {
 		item = item.replace(/\s/g, '')// tira os espacos
@@ -57,6 +58,7 @@ function gerarTabela(){
 			obj[item]++
 		}
 		return obj
+	
 	}, {} )
 
 
@@ -79,6 +81,7 @@ function gerarTabela(){
 			corpoTabela.innerHTML += `<tr> <td>${item}</td> <td>${sep[item]}</td> <td>
 			${(sep[item] / totPor * 100).toFixed(2) }%</td> <td>${fac}</td> <td>${ facP.toFixed(2) }%</td> </tr>`
 			cont += sep[item]
+
 		})
 
 		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">
@@ -201,6 +204,38 @@ function gerarTabela(){
 		
 		// Fim tabela continua
 	}
+
+	//  console.log(item)
+	//  console.log(sep)
+	 console.log(dados)
+
+	 //Criando Graficos 
+	 
+	 // Contexto do gráfico
+	 const ctx = document.getElementById('oChartDasBonecas')
+	 Chart.defaults.scale.ticks.beginAtZero = true
+
+	 let chart = new Chart(ctx,{
+	 	//Tipo do gráfico
+	  	type:'pie',
+	  	//Especificações
+	  	data:{
+	  		labels:['teste'],
+	  		datasets: [
+	  			{
+	  				label: 'points',
+	  				backgroundColor: ['#f1c40f','#e67e22','#16a085','#2980b9'],
+	  				data: [10]
+	  			}
+	  		]
+
+	  	}
+	 })
+
+	
+	 
+
+
 }
 
 // Interação com o botão calcular 
