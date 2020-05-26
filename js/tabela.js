@@ -11,6 +11,18 @@ const media = document.querySelector('#mean')
 const mediana = document.querySelector('#median')
 
 
+/*=========================================================================================================
+================================================== Charts =================================================
+=========================================================================================================== */
+let chart
+// Contexto do gráfico
+const ctx = document.getElementById('oChartDasBonecas')
+Chart.defaults.scale.ticks.beginAtZero = true
+
+
+
+
+
 // mostrar ou esconder o input de ordem
 if (tipoCalculo[1].checked) exibirOrdem.style.display = 'block'
 tipoCalculo[1].onchange = e => {
@@ -41,7 +53,9 @@ tipoCalculo[3].onchange = e => {
 	}
 }
 
-// Botão calcular 
+/*===================================================================================================================
+=============================================================== Botão calcular =======================================
+=======================================================================================================================*/
 function gerarTabela() {
 	//--------------------------------------------------------------
 	NomeTabela.innerHTML = nomeVariavel.value
@@ -78,6 +92,15 @@ function gerarTabela() {
 		totPor += sep[item]
 	})
 
+	// =========================================== Para os Charts ===========================================
+
+	chartTeste = Object.values(sep) //Parametros usados para compor o gráfico
+
+
+	/*==========================================================================================================
+	==================================================== Nominal ===============================================
+	============================================================================================================ */
+
 	if (tipoCalculo[0].checked) {
 		// Inserindo valores na tabela nominal
 		corpoTabela.innerHTML = ``
@@ -95,7 +118,28 @@ function gerarTabela() {
 		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">
 		${cont}</td> <td id="total"> 100% </td> <td id="total"> </td> <td id="total"> </td> </tr>`
 
+
+
+
+		chart = new Chart(ctx, {
+			//Tipo do gráfico
+			type: 'pie',
+			//Especificações
+			data: {
+				labels: dadosSeparados,
+				datasets: [{
+					label: NomeTabela,
+					data: chartTeste
+				}]
+
+			}
+		})
+
 		// Fim tabela nominal
+
+		/*==========================================================================================================
+		==================================================== Ordinal ===============================================
+		============================================================================================================ */
 
 	} else if (tipoCalculo[1].checked) {
 		// Inserindo valores na tabela ordinal
@@ -119,7 +163,27 @@ function gerarTabela() {
 		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td>
 		 <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
 
+
+
+		chart = new Chart(ctx, {
+			//Tipo do gráfico
+			type: 'pie',
+			//Especificações
+			data: {
+				labels: dadosSeparados,
+				datasets: [{
+					label: NomeTabela,
+					data: chartTeste
+				}]
+
+			}
+		})
+
 		// Fim tabela ordinal
+
+		/*==========================================================================================================
+		==================================================== Descritiva ===============================================
+		============================================================================================================ */
 
 	} else if (tipoCalculo[2].checked) {
 		//Inserindo valores na tabela Discreta
@@ -134,7 +198,26 @@ function gerarTabela() {
 		})
 		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td> <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
 
+
+		chart = new Chart(ctx, {
+			//Tipo do gráfico
+			type: 'bar',
+			//Especificações
+			data: {
+				labels: dadosSeparados,
+				datasets: [{
+					label: NomeTabela,
+					data: chartTeste
+				}]
+
+			}
+		})
+
 		// Fim da Tabela Discreta
+
+		/*==========================================================================================================
+		==================================================== Continua ===============================================
+		============================================================================================================ */
 
 	} else if (tipoCalculo[3].checked) {
 		// Inserindo valores na tabela continua
@@ -148,6 +231,7 @@ function gerarTabela() {
 		})
 
 		let at = (max - min)
+		console.log('var at:' + at)
 
 		let k = Number(Math.sqrt(dados.length).toString()[0]) // raiz quadrada do total dos elementos
 		let kmais = k + 1
@@ -198,6 +282,7 @@ function gerarTabela() {
 			})
 			minAux += ic
 			totVet.push(tot)
+			console.log('var totVet:' + totVet)
 		}
 
 		for (let i = 0; i < linha; i++) {
@@ -205,39 +290,52 @@ function gerarTabela() {
 			fac += totVet[i]
 			facP += fiP
 			corpoTabela.innerHTML += `<tr> <td>${Math.round(min)} |---- ${Math.round(min + ic)}</td> <td>${totVet[i]}</td> <td>${fiP}</td> <td>${fac}</td> <td>${facP}</td> </tr>`
+			let lblChartContinua = []
+			console.log('var min: ' + min)
+			console.log('var ic: ' + ic)
 			cont += totVet[i]
 			min += ic
 		}
 		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td> <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
 
+		console.log('var at:' + at)
+
+		chart = new Chart(ctx, {
+			type: 'bar',
+			//Especificações
+			data: {
+				labels: dadosSeparados,
+				datasets: [{
+					label: NomeTabela,
+					data: chartTeste
+				}]
+			},
+			options: {
+				scales: {
+					xAxes: [{
+						display: false,
+						barPercentage: 1.30,
+					}, {
+						display: true,
+					}],
+					yAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
+				}
+			}
+		});
+
 
 		// Fim tabela continua
 	}
 
-	//Criando Graficos 
-	chartTeste = Object.values(sep) //Parametros usados para compor o gráfico
-	console.log(chartTeste)
-
-	// Contexto do gráfico
-	const ctx = document.getElementById('oChartDasBonecas')
-	Chart.defaults.scale.ticks.beginAtZero = true
-
-	let chart = new Chart(ctx, {
-		//Tipo do gráfico
-		type: 'pie',
-		//Especificações
-		data: {
-			labels: dadosSeparados,
-			datasets: [{
-				label: NomeTabela,
-				data: chartTeste
-			}]
-
-		}
-	})
+	/*=========================================================================================================
+	============================================== Moda, Média e Mediana ======================================
+	=========================================================================================================== */
 
 
-	
 	/**
 	 * A "MODA" é o número que mais se repete no dataset
 	 *
@@ -250,10 +348,9 @@ function gerarTabela() {
 		// como o resultado pode ser bimodal ou multi-modal,
 		// o valor retornado é um Array
 		// moda de [3, 5, 4, 4, 1, 1, 2, 3] = [1, 3, 4]
-			let modes = [],
+		let modes = [],
 			count = [],
 			i, number, maxIndex = 0;
-			console.log("Funciona meu deus")
 
 		for (i = 0; i < dadosVariavel.length; i++) {
 			number = dadosVariavel[i];
@@ -289,12 +386,12 @@ function gerarTabela() {
 			i;
 		for (i = 0; i < dadosVariavel.length; i++) {
 			total += Number(dadosVariavel[i]);
-			console.log(total)
+
 		}
 		return total / dadosVariavel.length;
 	}
 
-	
+
 	/**
 	 * A mediana é o valor do meio de uma lista de números
 	 *
@@ -304,19 +401,25 @@ function gerarTabela() {
 	function median(dadosVariavel) {
 		// mediana de [3, 5, 4, 4, 1, 1, 2, 3] = 3 
 
-		let median = 0,
+		var median = [],
 			numsLen = dadosVariavel.length;
 		dadosVariavel.sort();
-		
+
+		var mediaPar1 = dadosVariavel[(numsLen /2) -1]
+		var mediaPar2 = dadosVariavel[numsLen / 2]
 
 		if (numsLen % 2 === 0) { // é par
 			// média dos dois números do meio
-			median = parseInt(dadosVariavel[numsLen / 2 - 1] + dadosVariavel[numsLen / 2]) / 2;
+
+			//  median = dadosVariavel[(numsLen -1) / 2], dadosVariavel[numsLen / 2]
+			// median[0] = dadosVariavel[(numsLen -1) / 2]
+			// median[1] = dadosVariavel[numsLen / 2]
+			median[0] = mediaPar1
+			median[1] = mediaPar2
 		} else { // é ímpar
 			// o número do meio
-			median = parseInt(dadosVariavel[(numsLen - 1) / 2]);
+			median[0] = (dadosVariavel[(numsLen - 1) / 2]);
 		}
-
 		return median;
 
 	}
@@ -332,7 +435,7 @@ function gerarTabela() {
 	moda.innerHTML += `Moda:  ${tesModa}`
 	media.innerHTML += `Média:  ${tesMedia}`
 	mediana.innerHTML += `Mediana:  ${tesMediana}`
-	// corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td> <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
+
 
 
 
@@ -342,4 +445,8 @@ function gerarTabela() {
 document.querySelector('#BotaoCalcular').onclick = e => {
 	// chamando a função
 	gerarTabela()
+}
+
+function destroyChart() {
+	chart.destroy()
 }
