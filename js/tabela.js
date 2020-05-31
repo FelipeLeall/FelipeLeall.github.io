@@ -312,7 +312,7 @@ function gerarTabela() {
 		/*=============================================== Mediana ============================================== */
 
 		const frequencia = dados.length
-		
+
 
 
 		let pos = frequencia / 2
@@ -352,13 +352,13 @@ function gerarTabela() {
 			fac += totVet[i]
 			fant.push(fac)
 			facP += fiP
-			xiAux[i] = (fimd[i]+maxMd[i])/2
+			xiAux[i] = (fimd[i] + maxMd[i]) / 2
 			corpoTabela.innerHTML += `<tr> <td>${Math.round(min)} |---- ${Math.round(min + ic)}</td> <td>${totVet[i]}</td> <td>${fiP}</td> <td>${fac}</td> <td>${facP}</td> <td>${xiAux[i]}</td>  </tr>`
 			let lblChartContinua = []
 			cont += totVet[i]
 			min += ic
 		}
-		
+
 		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td> <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
 		/*h = ic
 		fi = frequencia 
@@ -370,36 +370,47 @@ function gerarTabela() {
 		let mediaCont = 0
 
 		/*=============================================== Mediana ============================================== */
+
 		for (let i = 0; i < linha; i++) {
 			if (fant[i] >= pos) {
-				iAux = fimd[i]
-				fiAuxi = frequencia
-				fantAux = fant[i - 1]
-				fimdAux = totVet[i]
+				if (i == 0) { // caso a mediana esteja no primeiro intervalo e o fant tenha que ter o valor de 0
+					iAux = fimd[i]
+					fiAuxi = frequencia
+					fantAux = 0
+					fimdAux = totVet[i]
 
-				medianaCont = iAux + ((fiAuxi / 2 - fantAux) / fimdAux) * ic
+					medianaCont = iAux + ((fiAuxi / 2 - fantAux) / fimdAux) * ic
 
-				break
+					break
+				} else {
+					iAux = fimd[i]
+					fiAuxi = frequencia
+					fantAux = fant[i - 1]
+					fimdAux = totVet[i]
 
+					medianaCont = iAux + ((fiAuxi / 2 - fantAux) / fimdAux) * ic
+
+					break
+				}
 			}
 		}
 
 
 		for (let i = 0; i < linha; i++) {
-			mediaCont += xiAux[i]*totVet[i]/frequencia
+			mediaCont += xiAux[i] * totVet[i] / frequencia
 		}
-		
+
 		/*============================================== moda,média,medin ======================================== */
 		const tesModa = mode(dados)
 
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
 		media.innerHTML = ""
-	
+
 		moda.innerHTML += `Moda:  ${tesModa}`
 		media.innerHTML = `Média: ${mediaCont}`
 		mediana.innerHTML += `Mediana:  ${medianaCont}`
-		
+
 		/*=================================================== T_T ================================================ */
 
 		chart = new Chart(ctx, {
@@ -493,7 +504,7 @@ function gerarTabela() {
 		return total / dadosVariavel.length;
 	}
 
-	
+
 	/**
 	 * A mediana é o valor do meio de uma lista de números
 	 *
