@@ -71,22 +71,22 @@ function carregar() {
 		msSpan.textContent = this.value;
 		if (msSelect.value == "Quartil") {
 			msRange.step = 25
-			msRange.min = 0
+			msRange.min = 25
 			msRange.max = 100
 		}
 		if (msSelect.value == "Quintil") {
 			msRange.step = 20
-			msRange.min = 0
+			msRange.min = 20
 			msRange.max = 100
 		}
 		if (msSelect.value == "Decil") {
 			msRange.step = 10
-			msRange.min = 0
+			msRange.min = 10
 			msRange.max = 100
 		}
 		if (msSelect.value == "Porcentil") {
 			msRange.step = 1
-			msRange.min = 0
+			msRange.min = 1
 			msRange.max = 100
 		}
 
