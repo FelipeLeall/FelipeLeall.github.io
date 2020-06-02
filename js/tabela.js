@@ -89,8 +89,13 @@ function carregar() {
 			msRange.min = 1
 			msRange.max = 100
 		}
+		if (msSelect.value == "Escolha"){
+			alert('Selecione')
 
-		return  msValor = msRange.value
+		}
+
+
+		return msValor = msRange.value
 		console.log(msValor)
 	});
 }
@@ -237,13 +242,11 @@ function gerarTabela() {
 		CoeficienteVaria.innerHTML = ""
 		medidasS.innerHTML = ""
 
-		const tesModa = mode(dados)
-		const tesMedia = mean(dados)
+		const tesModa = modeString(dados)
 		const tesMediana = median(dados)
 		const msResposta = medidaSeparatriz(msValor,totPor,dados)
 
 		moda.innerHTML += `Moda:  ${tesModa}`
-		media.innerHTML += `Média:  ${tesMedia}`
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
 
