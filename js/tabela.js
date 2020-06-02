@@ -90,7 +90,7 @@ function carregar() {
 			msRange.max = 100
 		}
 
-		return msValor = msRange.value
+		return  msValor = msRange.value
 
 	});
 }
@@ -173,6 +173,7 @@ function gerarTabela() {
 		CoeficienteVaria.innerHTML = ""
 		medidasS.innerHTML = ""
 
+		console.log(msValor,totPor,dados)
 		const msResposta = medidaSeparatriz(msValor,totPor,dados)
 		const tesModa = modeString(dados)
 		const tesMediana = median(dados)
