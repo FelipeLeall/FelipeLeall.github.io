@@ -91,7 +91,7 @@ function carregar() {
 		}
 
 		return  msValor = msRange.value
-
+		console.log(msValor)
 	});
 }
 
@@ -173,7 +173,7 @@ function gerarTabela() {
 		CoeficienteVaria.innerHTML = ""
 		medidasS.innerHTML = ""
 
-		console.log(msValor,totPor,dados)
+
 		const msResposta = medidaSeparatriz(msValor,totPor,dados)
 		const tesModa = modeString(dados)
 		const tesMediana = median(dados)
@@ -568,14 +568,19 @@ function gerarTabela() {
 
 		/*=================================================== T_T ================================================ */
 
+
+		// var chartCont = fimd.map((fimd, maxMd) => )
+
+		
+
 		chart = new Chart(ctx, {
 			type: 'bar',
 			//Especificações
 			data: {
-				labels: dadosSeparados,
+				labels: maxMd,
 				datasets: [{
 					label: NomeTabela,
-					data: chartTeste
+					data: totVet
 				}]
 			},
 			options: {
@@ -722,12 +727,13 @@ function gerarTabela() {
 
 }
 
+
 function medidaSeparatriz(msValor, totPor, dados) {
-	var msResultAux = (msValor/100)*totPor//posição
+	var msResultAux =parseInt((msValor/100)*totPor)//posição
 	var msResult
-	for (i = 0; i < dados.length; i++) {
+	for (i = 1; i <= dados.length; i++) {
 		if(i == msResultAux){
-			msResult = dados[i]
+			msResult = dados[i-1]
 		}
 	} return msResult
 
