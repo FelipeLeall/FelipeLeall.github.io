@@ -6,9 +6,16 @@ const NomeTabela = document.querySelector('#variavelNome')
 const nomeVariavel = document.querySelector('#varNome')
 const dadosVariavel = document.querySelector('#varDados')
 const corpoTabela = document.querySelector('#corpo')
+const HeadTabela = document.querySelector('#headTabela')
 const moda = document.querySelector('#mode')
 const media = document.querySelector('#mean')
 const mediana = document.querySelector('#median')
+const desvioPadrao = document.querySelector('#desvioP')
+const CoeficienteVaria = document.querySelector('#cofVaria')
+const amostra = document.querySelector('#Amostra')
+const medidasS = document.querySelector('#medidasS')
+
+
 
 
 /*=========================================================================================================
@@ -20,7 +27,7 @@ const ctx = document.getElementById('oChartDasBonecas')
 Chart.defaults.scale.ticks.beginAtZero = true
 
 
-
+/*========================================== Select Medidas separatrizes ================================== */
 
 
 // mostrar ou esconder o input de ordem
@@ -53,17 +60,55 @@ tipoCalculo[3].onchange = e => {
 	}
 }
 
+
+function carregar() {
+	const msSelect = document.querySelector('#msSelect')
+	const msSpan = document.querySelector('#msSpan')
+	const msRange = document.querySelector('#msRange')
+	
+
+	msRange.addEventListener('input', function () {
+		msSpan.textContent = this.value;
+		if (msSelect.value == "Quartil") {
+			msRange.step = 25
+			msRange.min = 0
+			msRange.max = 100
+		}
+		if (msSelect.value == "Quintil") {
+			msRange.step = 20
+			msRange.min = 0
+			msRange.max = 100
+		}
+		if (msSelect.value == "Decil") {
+			msRange.step = 10
+			msRange.min = 0
+			msRange.max = 100
+		}
+		if (msSelect.value == "Porcentil") {
+			msRange.step = 1
+			msRange.min = 0
+			msRange.max = 100
+		}
+
+		return msValor = msRange.value
+
+	});
+}
+
 /*===================================================================================================================
 =============================================================== Botão calcular =======================================
 =======================================================================================================================*/
 function gerarTabela() {
-	//--------------------------------------------------------------
+
 	NomeTabela.innerHTML = nomeVariavel.value
 	localDaTabela.style.display = 'block'
 
 
 	let dados = dadosVariavel.value.split(',')
 	let dadosSeparados = dados.filter((este, i) => dados.indexOf(este) === i)
+	let dpXi = dadosSeparados.map((dadosSeparados) => Number(dadosSeparados))
+
+
 
 
 
@@ -124,14 +169,17 @@ function gerarTabela() {
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
 		media.innerHTML = ""
+		desvioPadrao.innerHTML = ""
+		CoeficienteVaria.innerHTML = ""
+		medidasS.innerHTML = ""
 
-		const tesModa = mode(dados)
-		const tesMedia = mean(dados)
+		const msResposta = medidaSeparatriz(msValor,totPor,dados)
+		const tesModa = modeString(dados)
 		const tesMediana = median(dados)
 
 		moda.innerHTML += `Moda:  ${tesModa}`
-		media.innerHTML += `Média:  ${tesMedia}`
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
+		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
 
 		/*===================================================== T_T ================================================ */
 
@@ -184,14 +232,19 @@ function gerarTabela() {
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
 		media.innerHTML = ""
+		desvioPadrao.innerHTML = ""
+		CoeficienteVaria.innerHTML = ""
+		medidasS.innerHTML = ""
 
 		const tesModa = mode(dados)
 		const tesMedia = mean(dados)
 		const tesMediana = median(dados)
+		const msResposta = medidaSeparatriz(msValor,totPor,dados)
 
 		moda.innerHTML += `Moda:  ${tesModa}`
 		media.innerHTML += `Média:  ${tesMedia}`
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
+		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
 
 		/*===================================================== T_T ================================================ */
 
@@ -235,15 +288,55 @@ function gerarTabela() {
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
 		media.innerHTML = ""
+		medidasS.innerHTML = ""
 
 		const tesModa = mode(dados)
 		const tesMedia = mean(dados)
 		const tesMediana = median(dados)
+		const msResposta = medidaSeparatriz(msValor,totPor,dados)
 
 		moda.innerHTML += `Moda:  ${tesModa}`
 		media.innerHTML += `Média:  ${tesMedia}`
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
+		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
 
+
+		// Para o Desvio Padrão
+
+		let dpFi = []
+		let desvioP = 0
+		let cofVaria = 0
+
+
+		Object.keys(sep).forEach(item => {
+			dpFi.push(sep[item])
+
+		})
+
+		if (amostra.value === 'População') {
+			for (let i = 0; i < dpFi.length; i++) {
+				desvioP += ((dpXi[i] - tesMedia) ** 2) * dpFi[i]
+			}
+			desvioP = Math.sqrt(desvioP / totPor)
+			cofVaria = (desvioP / tesMedia) * 100
+
+		} else {
+			for (let i = 0; i < dpFi.length; i++) {
+				desvioP += ((dpXi[i] - tesMedia) ** 2) * dpFi[i]
+			}
+			desvioP = Math.sqrt(desvioP / (totPor - 1))
+			cofVaria = (desvioP / tesMedia) * 100
+		}
+
+		desvioPadrao.innerHTML = ""
+		CoeficienteVaria.innerHTML = ""
+
+		desvioPadrao.innerHTML += `Desvio Padrão : ${desvioP.toFixed(2)}`
+		CoeficienteVaria.innerHTML += `Coeficiente de Variação: ${cofVaria.toFixed(2)}%`
+
+
+
+		
 		/*===================================================== T_T ================================================ */
 
 
@@ -309,7 +402,7 @@ function gerarTabela() {
 			}
 		}
 
-		/*=============================================== Mediana ============================================== */
+		/*=============================================== Var para Mediana ============================================== */
 
 		const frequencia = dados.length
 
@@ -353,12 +446,11 @@ function gerarTabela() {
 			fant.push(fac)
 			facP += fiP
 			xiAux[i] = (fimd[i] + maxMd[i]) / 2
-			corpoTabela.innerHTML += `<tr> <td>${Math.round(min)} |---- ${Math.round(min + ic)}</td> <td>${totVet[i]}</td> <td>${fiP}</td> <td>${fac}</td> <td>${facP}</td> <td>${xiAux[i]}</td>  </tr>`
+			corpoTabela.innerHTML += `<tr> <td>${Math.round(min)} |---- ${Math.round(min + ic)}</td> <td>${totVet[i]}</td> <td>${fiP.toFixed(0)}</td> <td>${fac}</td> <td>${facP.toFixed(0)}</td> <td>${xiAux[i]}</td>  </tr>`
 			let lblChartContinua = []
 			cont += totVet[i]
 			min += ic
 		}
-
 		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td> <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
 		/*h = ic
 		fi = frequencia 
@@ -396,7 +488,7 @@ function gerarTabela() {
 		}
 
 
-		for (let i = 0; i < linha; i++) {
+		for (let i = 0; i < linha; i++) { //Media
 			mediaCont += xiAux[i] * totVet[i] / frequencia
 		}
 
@@ -408,8 +500,70 @@ function gerarTabela() {
 		media.innerHTML = ""
 
 		moda.innerHTML += `Moda:  ${tesModa}`
-		media.innerHTML = `Média: ${mediaCont}`
-		mediana.innerHTML += `Mediana:  ${medianaCont}`
+		media.innerHTML = `Média: ${mediaCont.toFixed(2)}`
+		mediana.innerHTML += `Mediana:  ${medianaCont.toFixed(2)}`
+
+		let msPosAux = (msValor/100)*totPor//Medidas Separatrizes
+		let msResposta
+		
+
+		for (let i = 0; i < linha; i++) {
+			if (fant[i] >= msPosAux) {
+				if (i == 0) { // caso a mediana esteja no primeiro intervalo e o fant tenha que ter o valor de 0
+					iAux = fimd[i]
+					fiAuxi = msPosAux
+					fantAux = 0
+					fimdAux = totVet[i]
+
+					msResposta = iAux + ((msPosAux - fantAux) / fimdAux) * ic
+
+					break
+				} else {
+					iAux = fimd[i]
+					fiAuxi = msPosAux
+					fantAux = fant[i - 1]
+					fimdAux = totVet[i]
+					msResposta = iAux + ((msPosAux - fantAux) / fimdAux) * ic
+
+					break
+				}
+			}
+		}
+
+		medidasS.innerHTML = ""
+		medidasS.innerHTML += `Medida Separatriz: ${msResposta.toFixed(2)}`
+
+
+
+
+
+		// Para o Desvio Padrão
+		let desvioP = 0
+		let cofVaria = 0
+
+		if (amostra.value === 'População') {
+			for (let i = 0; i < totVet.length; i++) {
+				desvioP += ((xiAux[i] - mediaCont) ** 2) * totVet[i]
+
+			}
+			desvioP = Math.sqrt(desvioP / totPor)
+			cofVaria = (desvioP / mediaCont) * 100
+
+		} else {
+			for (let i = 0; i < totVet.length; i++) {
+				desvioP += ((xiAux[i] - mediaCont) ** 2) * totVet[i]
+
+
+			}
+			desvioP = Math.sqrt(desvioP / (totPor - 1))
+			cofVaria = (desvioP / mediaCont) * 100
+		}
+
+		desvioPadrao.innerHTML = ""
+		CoeficienteVaria.innerHTML = ""
+
+		desvioPadrao.innerHTML += `Desvio Padrão : ${desvioP.toFixed(2)}`
+		CoeficienteVaria.innerHTML += `Coeficiente de Variação: ${cofVaria.toFixed(2)}%`
 
 		/*=================================================== T_T ================================================ */
 
@@ -485,6 +639,34 @@ function gerarTabela() {
 	}
 
 
+	function modeString(dadosVariavel) {
+		// como o resultado pode ser bimodal ou multi-modal,
+		// o valor retornado é um Array
+		// moda de [3, 5, 4, 4, 1, 1, 2, 3] = [1, 3, 4]
+		let modes = [],
+			count = [],
+			i, number, maxIndex = 0;
+
+		for (i = 0; i < dadosVariavel.length; i++) {
+			number = dadosVariavel[i];
+			count[number] = (count[number] || 0) + 1;
+			if (count[number] > maxIndex) {
+				maxIndex = count[number];
+			}
+		}
+
+		for (i in count) {
+			if (count.hasOwnProperty(i)) {
+				if (count[i] === maxIndex) {
+					modes.push(i);
+				}
+			}
+		}
+
+		return modes;
+	}
+
+
 	/**
 	 * A "Média" é calculada da maneira simples, somando todos os números
 	 * e então dividindo pela quantidade de números existentes.
@@ -536,6 +718,17 @@ function gerarTabela() {
 		return median;
 
 	}
+
+}
+
+function medidaSeparatriz(msValor, totPor, dados) {
+	var msResultAux = (msValor/100)*totPor//posição
+	var msResult
+	for (i = 0; i < dados.length; i++) {
+		if(i == msResultAux){
+			msResult = dados[i]
+		}
+	} return msResult
 
 }
 

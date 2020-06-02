@@ -56,8 +56,8 @@
         <div class="row container-fluid form-group" style="margin-left: 5px;">
 
             <select class="form-control col-4" name="tipoAmostra" id="Amostra" style="margin-top: 20px;">
-                <option value=""><strong>Amostra</strong></option>
-                <option value=""><strong>População</strong></option>
+                <option value="Amostra"><strong>Amostra</strong></option>
+                <option value="População"><strong>População</strong></option>
             </select>
 
         </div>
@@ -97,17 +97,35 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="calculoSelecionado" id="quantDiscreta"
                             value="option3">
-                        <label class="form-check-label" for="quantDiscreta"><strong>Quantitativa
-                                Discreta</strong></label>
+                        <label class="form-check-label" for="quantDiscreta"><strong>Quantitativa Discreta</strong></label>
                     </div>
 
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="calculoSelecionado" id="quantContinua"
                             value="option4">
-                        <label class="form-check-label" for="quantContinua"><strong>Quantitativa
-                                Continua</strong></label>
+                        <label class="form-check-label" for="quantContinua"><strong>Quantitativa Continua</strong></label>
                     </div>
                 </div>
+
+                <br>
+                <div class="container-fluid" onchange="carregar()">
+                    <div class="col-6">
+                        <label for="exampleFormControlSelect1"><strong>Medidas Separatriz</strong></label>
+                        <select class="form-control" id="msSelect">
+                            <option value="Quartil">Escolha</option>  
+                          <option value="Quartil">Quartil</option>
+                          <option value="Quintil">Quintil</option>
+                          <option value="Decil">Decil</option>
+                          <option value="Porcentil">Porcentil</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <span style="text-align: center;" id="msSpan">50</span>
+                        <input type="range" class="form-control-range" id="msRange">
+                      </div>
+                </div>
+
 
                 <div class="form-group" id="varOrdem" style="display: none;"
                     style="margin-left: 20px; text-align: left;">
@@ -116,8 +134,8 @@
                     <input type="" class="form-control" id="ordem" placeholder="Colocar os dados separados com ','">
                     <small>Dados repetidos serão apagados</small>
                 </div>
-                <br>
 
+                <br>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
@@ -150,7 +168,7 @@
             <!-- Tabela -->
             <div id="calculoNominal" class="container-fluid col-6">
                 <table class="container-fluid table table-dark table-striped table-hover ">
-                    <thead>
+                    <thead id="headTabela">
                         <th id="variavelNome">Variável</th>
                         <th>Fi</th>
                         <th>Fi%</th>
@@ -177,6 +195,9 @@
                     <p id="mode"></p>
                     <p id="mean"></p>
                     <p id="median"></p>
+                    <p id="desvioP"></p>
+                    <p id="cofVaria"></p>
+                    <p id="medidasS"></p>
                 </div>
             </div>
             <div class="chart-wrapper col-6" style="height: 150px; width: 150px ">
