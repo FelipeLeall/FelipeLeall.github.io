@@ -96,7 +96,6 @@ function carregar() {
 
 
 		return msValor = msRange.value
-		console.log(msValor)
 	});
 }
 
@@ -198,7 +197,25 @@ function gerarTabela() {
 				labels: dadosSeparados,
 				datasets: [{
 					label: NomeTabela,
-					data: chartTeste
+					data: chartTeste,
+					backgroundColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					borderColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					borderWidth: 1
+
 				}]
 
 			}
@@ -262,7 +279,24 @@ function gerarTabela() {
 				labels: dadosSeparados,
 				datasets: [{
 					label: NomeTabela,
-					data: chartTeste
+					data: chartTeste,
+					backgroundColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					borderColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					borderWidth: 1
 				}]
 
 			}
@@ -296,7 +330,7 @@ function gerarTabela() {
 
 		const tesModa = mode(dados)
 		const tesMedia = mean(dados)
-		const tesMediana = median(dados)
+		const tesMediana =  medianDesc(dados)
 		const msResposta = medidaSeparatriz(msValor,totPor,dados)
 
 		moda.innerHTML += `Moda:  ${tesModa}`
@@ -352,7 +386,24 @@ function gerarTabela() {
 				labels: dadosSeparados,
 				datasets: [{
 					label: NomeTabela,
-					data: chartTeste
+					data: chartTeste,
+					backgroundColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					borderColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					borderWidth: 1
 				}]
 
 			}
@@ -497,7 +548,7 @@ function gerarTabela() {
 		}
 
 		/*============================================== moda,média,medin ======================================== */
-		const tesModa = mode(dados)
+		const tesModa = modaCont(totVet, xiAux)
 
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
@@ -510,6 +561,7 @@ function gerarTabela() {
 		let msPosAux = (msValor/100)*totPor//Medidas Separatrizes
 		let msResposta
 		
+
 
 		for (let i = 0; i < linha; i++) {
 			if (fant[i] >= msPosAux) {
@@ -537,9 +589,7 @@ function gerarTabela() {
 		medidasS.innerHTML = ""
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta.toFixed(2)}`
 
-
-
-
+		
 
 		// Para o Desvio Padrão
 		let desvioP = 0
@@ -583,7 +633,24 @@ function gerarTabela() {
 				labels: maxMd,
 				datasets: [{
 					label: NomeTabela,
-					data: totVet
+					data: totVet,
+					backgroundColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					borderColor: [
+						'rgba(255, 99, 132, 1)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(75, 192, 192, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)'
+					],
+					borderWidth: 1
 				}]
 			},
 			options: {
@@ -612,6 +679,34 @@ function gerarTabela() {
 	=========================================================================================================== */
 
 
+	function modaCont(dadosVariavel, xiAux){
+		let repetição = 0
+		let cont = 0
+		let modaAux = []
+		let moda = []
+
+		repetição = dadosVariavel[0]
+		for(let i = 0; i < dadosVariavel.length; i ++){
+			if(repetição < dadosVariavel[i]){
+				repetição = dadosVariavel[i]
+				 modaAux.push(i)
+			}
+		}
+		
+		for(let i = 0; i < xiAux.length; i ++){
+
+			if(i == modaAux[cont]){
+				cont += 1
+				 moda.push(xiAux[i])
+			}
+		}
+
+		return moda
+	}
+
+
+
+
 	/**
 	 * A "MODA" é o número que mais se repete no dataset
 	 *
@@ -628,6 +723,7 @@ function gerarTabela() {
 			count = [],
 			i, number, maxIndex = 0;
 
+
 		for (i = 0; i < dadosVariavel.length; i++) {
 			number = dadosVariavel[i];
 			count[number] = (count[number] || 0) + 1;
@@ -640,6 +736,7 @@ function gerarTabela() {
 			if (count.hasOwnProperty(i)) {
 				if (count[i] === maxIndex) {
 					modes.push(Number(i));
+					
 				}
 			}
 		}
@@ -728,11 +825,36 @@ function gerarTabela() {
 
 	}
 
+	function medianDesc(dadosVariavel) {
+		// mediana de [3, 5, 4, 4, 1, 1, 2, 3] = 3 
+
+		var median = [],
+			numsLen = dadosVariavel.length;
+		dadosVariavel.sort();
+
+		var mediaPar1 = Number(dadosVariavel[(numsLen / 2) - 1])
+		var mediaPar2 = Number(dadosVariavel[numsLen / 2])
+
+		if (numsLen % 2 === 0) { // é par
+			// média dos dois números do meio
+
+			// median = dadosVariavel[(numsLen -1) / 2], dadosVariavel[numsLen / 2]
+			// median[0] = dadosVariavel[(numsLen -1) / 2]
+			// median[1] = dadosVariavel[numsLen / 2]
+			median[0] = (mediaPar1+mediaPar2)/2
+		} else { // é ímpar
+			// o número do meio
+			median[0] = (dadosVariavel[(numsLen - 1) / 2]);
+		}
+		return median;
+
+	}
+
 }
 
 
 function medidaSeparatriz(msValor, totPor, dados) {
-	var msResultAux =parseInt((msValor/100)*totPor)//posição
+	var msResultAux = parseInt((msValor/100)*totPor)//posição
 	var msResult
 	for (i = 1; i <= dados.length; i++) {
 		if(i == msResultAux){

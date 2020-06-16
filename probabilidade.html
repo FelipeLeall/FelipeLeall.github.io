@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Estatistic</title>
+    <link rel="icon" href="img/Logo Branco.png">
+
+    <!-- CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilo/stilo.css">
+
+    <!-- Graficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+</head>
+
+<body style="background-color: silver ;">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <a class="navbar-brand" href="index.html">
+            <strong>Network Estatistic</strong>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#"><strong>Home</strong> <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./index.html"><strong>Descritiva</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./probabilidade.html"><strong>Probabilidade</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><strong>...</strong></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Fim Navbar -->
+
+    <div class="container-fluid">
+        <div class="row" >
+          <div class="col-md-6" id="styleDados">
+
+            <!-- <div id="buttons">
+                <button type="button" class="btn btn-info">Binomial</button>
+                <button type="button" class="btn btn-info">Normal</button>
+                <button type="button" class="btn btn-info">Uniforme</button>
+            </div> -->
+
+            <br><br>
+
+            <div>
+                <div class="form-group">
+                  <label for="amostra">Amostra</label>
+                  <input type="text" class="form-control" id="amostra">
+                  <small class="form-text text-muted"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="sucesso">Sucesso</label>
+                    <input type="text" class="form-control" id="sucesso">
+                    <small class="form-text text-muted"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="fracasso">Fracasso</label>
+                    <input type="text" class="form-control" id="fracasso">
+                    <small class="form-text text-muted"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="evento">Evento</label>
+                    <input type="text" class="form-control" id="evento">
+                    <small class="form-text text-muted"></small>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="calcular" onclick="binomial()">Calcular</button>
+
+            </div>
+
+          </div>
+          <div class="col-md-4">
+              <p id="resultAmo"></p>
+              <p id="resultSuc"></p>
+              <p id="resultFra"></p>
+              <p id="resultEve"></p>
+          </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="./js/jquery.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="./js/probabilidade.js"></script>
+
+</body>
+
+</html>
