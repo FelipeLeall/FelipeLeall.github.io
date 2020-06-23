@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Network Estatistic</title>
+    <link rel="icon" href="img/Logo Branco.png" />
+
+    <!-- CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/estilo/stilo.css" />
+
+    <!-- Graficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  </head>
+
+  <body style="background-color: silver;">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="index.html">
+        <strong>Network Estatistic</strong>
+      </a>
+
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-link" href="#"
+              ><strong>Home</strong> <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./index.html"
+              ><strong>Descritiva</strong></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./probabilidade.html"
+              ><strong>Probabilidade</strong></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="correlacao.html"
+              ><strong> Correlação e Regressão</strong></a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Fim Navbar -->
+
+    <main style="margin: 10px 20px;">
+      <!-- Imput de dados -->
+
+      <div class="row form-group">
+        <div class="col-4" id="styleDados">
+          <div class="container-fluid">
+            <div class="form-group">
+              <label for="valoresX"
+                ><strong>Valores de X</strong></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="varNome"
+                placeholder="Colocar os dados separados com ','"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="dadosVariavel"
+                ><strong>Valores de Y</strong></label
+              >
+              <input
+                type=""
+                class="form-control"
+                id="varDados"
+                placeholder="Colocar os dados separados com ','"
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            id="BotaoCalcular"
+            class="btn btn-dark"
+            style="margin-left: 25px;"
+          >
+            Calcular
+          </button>
+          </div>
+        </div>
+
+        <div class="chart-wrapper col-6" style="height: 150px; width: 150px;">
+          <canvas id="chartCorrelacao"></canvas>
+        </div>
+      </div>
+    </main>
+
+    <!-- JS -->
+    <script src="./js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./js/correlacao.js"></script>
+  </body>
+</html>
