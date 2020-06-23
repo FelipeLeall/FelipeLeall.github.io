@@ -52,15 +52,18 @@
         <div class="row" >
           <div class="col-md-6" id="styleDados">
 
-            <!-- <div id="buttons">
-                <button type="button" class="btn btn-info">Binomial</button>
-                <button type="button" class="btn btn-info">Normal</button>
-                <button type="button" class="btn btn-info">Uniforme</button>
-            </div> -->
+            <div id="buttons">
+                <ul>
+                    <button type="button" id="btnBi" class="btn btn-outline-primary" onclick="buttonBi()">Binomial</button>
+                    <button type="button" id="btnNor" class="btn btn-outline-primary" onclick="buttonNor()">Normal</button>
+                    <button type="button" id="btnUni" class="btn btn-outline-primary" onclick="buttonUni()">Uniforme</button>
+                </ul>
+            </div>
 
             <br><br>
-
-            <div>
+            <!-- ========================================================= Binomial ======================================================= -->
+            <!-- ========================================================================================================================== -->
+            <div id="divBi">
                 <div class="form-group">
                   <label for="amostra">Amostra</label>
                   <input type="text" class="form-control" id="amostra">
@@ -89,19 +92,86 @@
 
             </div>
 
+            <!-- =========================================================== Normal ======================================================= -->
+            <!-- ========================================================================================================================== -->
+
+            <div id="divNor" style="display: none;">
+                <div class="form-group">
+                  <label for="media">Média</label>
+                  <input type="text" class="form-control" id="media">
+                  <small class="form-text text-muted"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="desvioPadrao">Desvio Padrão</label>
+                    <input type="text" class="form-control" id="desvioPadrao">
+                    <small class="form-text text-muted"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Selecione uma opção</label>
+                    <select class="form-control" id="select">
+                      <option value="entre">Entre dois números</option>
+                      <option value="maior">Maior que</option>
+                      <option value="menor">Menor que</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="intervalo">Intervalo</label>
+                    <input type="text" class="form-control" id="intervalo">
+                    <small class="form-text text-muted"></small>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="calcular" onclick="normal()">Calcular</button>
+            </div>
+
+            <!-- ========================================================= Uniforme ======================================================= -->
+            <!-- ========================================================================================================================== -->
+
+            <div id="divUni" style="display: none;">
+                <div class="form-group">
+                  <label for="pontoMin">Ponto mínimo</label>
+                  <input type="text" class="form-control" id="pontoMin">
+                  <small class="form-text text-muted"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="pontoMax">Ponto máximo</label>
+                    <input type="text" class="form-control" id="pontoMax">
+                    <small class="form-text text-muted"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Selecione uma opção</label>
+                    <select class="form-control" id="selectUni">
+                      <option value="entre">Entre dois números</option>
+                      <option value="maior">Maior que</option>
+                      <option value="menor">Menor que</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="intervalo">Intervalo</label>
+                    <input type="text" class="form-control" id="intervaloUni">
+                    <small class="form-text text-muted"></small>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="calcular" onclick="uniforme()">Calcular</button>
+            </div>
+
           </div>
           <div class="col-md-4">
-              <p id="resultAmo"></p>
-              <p id="resultSuc"></p>
-              <p id="resultFra"></p>
-              <p id="resultEve"></p>
+              <p id="resultPro"></p>
+              <p id="resultMed"></p>
+              <p id="resultDP"></p>
           </div>
         </div>
     </div>
 
     <!-- JS -->
     <script src="./js/jquery.js"></script>
-    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <script src="./js/probabilidade.js"></script>
 
 </body>

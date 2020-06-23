@@ -65,7 +65,7 @@ function carregar() {
 	const msSelect = document.querySelector('#msSelect')
 	const msSpan = document.querySelector('#msSpan')
 	const msRange = document.querySelector('#msRange')
-	
+
 
 	msRange.addEventListener('input', function () {
 		msSpan.textContent = this.value;
@@ -89,11 +89,10 @@ function carregar() {
 			msRange.min = 1
 			msRange.max = 100
 		}
-		if (msSelect.value == "Escolha"){
+		if (msSelect.value == "Escolha") {
 			alert('Selecione')
 
 		}
-
 
 		return msValor = msRange.value
 	});
@@ -112,12 +111,15 @@ function gerarTabela() {
 	let dadosSeparados = dados.filter((este, i) => dados.indexOf(este) === i)
 	let dpXi = dadosSeparados.map((dadosSeparados) => Number(dadosSeparados))
 
-
-
-
+	console.log('dadosVariavel: ' + dadosVariavel.value)
+	console.log('dados: ' + dados)
+	console.log('dadosSeparados: ' + dadosSeparados)
+	console.log('dpXi: ' + dpXi)
 
 	// Separando Elementos inseridos
 	let sep = dados.reduce((obj, item) => {
+		console.log(obj)
+		console.log(item)
 		item = item.replace(/\s/g, '') // tira os espacos
 		if (!obj[item]) {
 			obj[item] = 1
@@ -128,7 +130,7 @@ function gerarTabela() {
 
 	}, {})
 
-
+	console.log(sep)
 
 
 
@@ -141,9 +143,13 @@ function gerarTabela() {
 		totPor += sep[item]
 	})
 
+	console.log('totPor: ' + totPor)
+
 	// =========================================== Para os Charts ===========================================
 
 	chartTeste = Object.values(sep) //Parametros usados para compor o gráfico
+
+	console.log('chartTeste: ' + chartTeste)
 
 
 	/*==========================================================================================================
@@ -152,7 +158,7 @@ function gerarTabela() {
 
 	if (tipoCalculo[0].checked) {
 		// Inserindo valores na tabela nominal
-		corpoTabela.innerHTML = ``
+		corpoTabela.innerHTML = ''
 		cont = 0
 
 		Object.keys(sep).forEach(item => {
@@ -164,9 +170,12 @@ function gerarTabela() {
 
 		})
 
-		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">
-		${cont}</td> <td id="total"> 100% </td> <td id="total"> </td> <td id="total"> </td> </tr>`
-
+		corpoTabela.innerHTML += `<tr> <td id="total">Total</td>
+									<td id="total">${cont}</td> 
+									<td id="total"> 100% </td>
+									<td id="total"> </td>
+									<td id="total"></td>
+								</tr>`
 
 		/*=============================================== Moda,Média,Mediana ========================================== */
 
@@ -178,7 +187,7 @@ function gerarTabela() {
 		medidasS.innerHTML = ""
 
 
-		const msResposta = medidaSeparatriz(msValor,totPor,dados)
+		const msResposta = medidaSeparatriz(msValor, totPor, dados)
 		const tesModa = modeString(dados)
 		const tesMediana = median(dados)
 
@@ -187,7 +196,6 @@ function gerarTabela() {
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
 
 		/*===================================================== T_T ================================================ */
-
 
 		chart = new Chart(ctx, {
 			//Tipo do gráfico
@@ -221,16 +229,17 @@ function gerarTabela() {
 			}
 		})
 
-		// Fim tabela nominal
-
 		/*==========================================================================================================
 		==================================================== Ordinal ===============================================
 		============================================================================================================ */
 
 	} else if (tipoCalculo[1].checked) {
-		// Inserindo valores na tabela ordinal
+		
+
 		let ordemInput = document.querySelector('#ordem').value.split(',')
 		ordemInput = ordemInput.filter((este, i) => ordemInput.indexOf(este) === i)
+
+		console.log('ordemInput: ' + ordemInput)
 
 
 
@@ -261,7 +270,7 @@ function gerarTabela() {
 
 		const tesModa = modeString(dados)
 		const tesMediana = median(dados)
-		const msResposta = medidaSeparatriz(msValor,totPor,dados)
+		const msResposta = medidaSeparatriz(msValor, totPor, dados)
 
 		moda.innerHTML += `Moda:  ${tesModa}`
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
@@ -330,8 +339,8 @@ function gerarTabela() {
 
 		const tesModa = mode(dados)
 		const tesMedia = mean(dados)
-		const tesMediana =  medianDesc(dados)
-		const msResposta = medidaSeparatriz(msValor,totPor,dados)
+		const tesMediana = medianDesc(dados)
+		const msResposta = medidaSeparatriz(msValor, totPor, dados)
 
 		moda.innerHTML += `Moda:  ${tesModa}`
 		media.innerHTML += `Média:  ${tesMedia}`
@@ -374,7 +383,7 @@ function gerarTabela() {
 
 
 
-		
+
 		/*===================================================== T_T ================================================ */
 
 
@@ -458,10 +467,7 @@ function gerarTabela() {
 		}
 
 		/*=============================================== Var para Mediana ============================================== */
-
 		const frequencia = dados.length
-
-
 
 		let pos = frequencia / 2
 		let fimd = []
@@ -558,9 +564,9 @@ function gerarTabela() {
 		media.innerHTML = `Média: ${mediaCont.toFixed(2)}`
 		mediana.innerHTML += `Mediana:  ${medianaCont.toFixed(2)}`
 
-		let msPosAux = (msValor/100)*totPor//Medidas Separatrizes
+		let msPosAux = (msValor / 100) * totPor //Medidas Separatrizes
 		let msResposta
-		
+
 
 
 		for (let i = 0; i < linha; i++) {
@@ -589,7 +595,7 @@ function gerarTabela() {
 		medidasS.innerHTML = ""
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta.toFixed(2)}`
 
-		
+
 
 		// Para o Desvio Padrão
 		let desvioP = 0
@@ -624,7 +630,7 @@ function gerarTabela() {
 
 		// var chartCont = fimd.map((fimd, maxMd) => )
 
-		
+
 
 		chart = new Chart(ctx, {
 			type: 'bar',
@@ -679,25 +685,25 @@ function gerarTabela() {
 	=========================================================================================================== */
 
 
-	function modaCont(dadosVariavel, xiAux){
+	function modaCont(dadosVariavel, xiAux) {
 		let repetição = 0
 		let cont = 0
 		let modaAux = []
 		let moda = []
 
 		repetição = dadosVariavel[0]
-		for(let i = 0; i < dadosVariavel.length; i ++){
-			if(repetição < dadosVariavel[i]){
+		for (let i = 0; i < dadosVariavel.length; i++) {
+			if (repetição < dadosVariavel[i]) {
 				repetição = dadosVariavel[i]
-				 modaAux.push(i)
+				modaAux.push(i)
 			}
 		}
-		
-		for(let i = 0; i < xiAux.length; i ++){
 
-			if(i == modaAux[cont]){
+		for (let i = 0; i < xiAux.length; i++) {
+
+			if (i == modaAux[cont]) {
 				cont += 1
-				 moda.push(xiAux[i])
+				moda.push(xiAux[i])
 			}
 		}
 
@@ -736,7 +742,7 @@ function gerarTabela() {
 			if (count.hasOwnProperty(i)) {
 				if (count[i] === maxIndex) {
 					modes.push(Number(i));
-					
+
 				}
 			}
 		}
@@ -841,7 +847,7 @@ function gerarTabela() {
 			// median = dadosVariavel[(numsLen -1) / 2], dadosVariavel[numsLen / 2]
 			// median[0] = dadosVariavel[(numsLen -1) / 2]
 			// median[1] = dadosVariavel[numsLen / 2]
-			median[0] = (mediaPar1+mediaPar2)/2
+			median[0] = (mediaPar1 + mediaPar2) / 2
 		} else { // é ímpar
 			// o número do meio
 			median[0] = (dadosVariavel[(numsLen - 1) / 2]);
@@ -854,13 +860,14 @@ function gerarTabela() {
 
 
 function medidaSeparatriz(msValor, totPor, dados) {
-	var msResultAux = parseInt((msValor/100)*totPor)//posição
+	var msResultAux = parseInt((msValor / 100) * totPor) //posição
 	var msResult
 	for (i = 1; i <= dados.length; i++) {
-		if(i == msResultAux){
-			msResult = dados[i-1]
+		if (i == msResultAux) {
+			msResult = dados[i - 1]
 		}
-	} return msResult
+	}
+	return msResult
 
 }
 
