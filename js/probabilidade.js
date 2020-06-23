@@ -1,4 +1,9 @@
 // =========================================================== Cada um com seu cada qual =======================================================
+let resultPro = document.querySelector('#resultPro')
+let resultMed = document.querySelector('#resultMed')
+let resultDP = document.querySelector('#resultDP')
+let vari = document.querySelector('#variDP')
+
 function buttonBi() {
     let divBi = document.querySelector('#divBi')
     let divNor = document.querySelector('#divNor')
@@ -34,9 +39,6 @@ function binomial() {
     let sucesso = document.querySelector('#sucesso')
     let fracasso = document.querySelector('#fracasso')
     let evento = document.querySelector('#evento')
-    let resultPro = document.querySelector('#resultPro')
-    let resultMed = document.querySelector('#resultMed')
-    let resultDP = document.querySelector('#resultDP')
 
     let n = amostra.value
     let p = sucessoAndFracasso(sucesso.value)
@@ -206,6 +208,14 @@ function normal() {
 
     probabilidadeResult = (probabilidadeResult * 100).toFixed(2)
     console.log(probabilidadeResult)
+
+    // Limpando HTML
+    resultPro.innerHTML = ''
+    resultMed.innerHTML = ''
+    resultDP.innerHTML = ''
+    vari.innerHTML = ''
+    // Printando HTML
+    resultPro.innerHTML += `Probabilidade : ${(probabilidadeResult)}`
 }
 
 function uniforme() {
@@ -216,7 +226,7 @@ function uniforme() {
     let media = 0
     let desvioPadrao = 0
     let variancia = 0
-    let resultado = 0  
+    let resultado = 0
     let intervaloAux = 0
 
     pontoMin = Number(pontoMin.value)
@@ -233,22 +243,35 @@ function uniforme() {
     switch (select.value) {
         case 'entre':
             intervaloAux = intervalo[1] - intervalo[0]
-            resultado = ((1 / (pontoMax - pontoMin) * intervaloAux)*100).toFixed(2)
+            resultado = ((1 / (pontoMax - pontoMin) * intervaloAux) * 100).toFixed(2)
             break
 
         case 'maior':
             intervaloAux = pontoMax - intervalo[0]
-            resultado = ((1 / (pontoMax - pontoMin) * intervaloAux)*100).toFixed(2)
+            resultado = ((1 / (pontoMax - pontoMin) * intervaloAux) * 100).toFixed(2)
             break
 
         case 'menor':
             intervaloAux = intervalo[0] - pontoMin
-            resultado = ((1 / (pontoMax - pontoMin) * intervaloAux)*100).toFixed(2)
+            resultado = ((1 / (pontoMax - pontoMin) * intervaloAux) * 100).toFixed(2)
             break
     }
 
     console.log(intervaloAux)
     console.log(resultado)
+
+
+    // Limpando HTML
+    resultPro.innerHTML = ''
+    resultMed.innerHTML = ''
+    resultDP.innerHTML = ''
+    vari.innerHTML = ''
+
+    // Printando HTML
+    resultPro.innerHTML += `Probabilidade : ${resultado}`
+    resultMed.innerHTML += `Média : ${media}`
+    resultDP.innerHTML += `Desvio Padrão : ${desvioPadrao}`
+    vari.innerHTML += `Variancia : ${variancia} `
 
 }
 
