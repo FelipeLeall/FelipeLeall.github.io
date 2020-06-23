@@ -15,21 +15,24 @@ const CoeficienteVaria = document.querySelector('#cofVaria')
 const amostra = document.querySelector('#Amostra')
 const medidasS = document.querySelector('#medidasS')
 
-
-
-
 /*=========================================================================================================
 ================================================== Charts =================================================
 =========================================================================================================== */
 let chart
+let colorsChart = ['rgba(255, 99, 132, 1)',
+	'rgba(54, 162, 235, 1)',
+	'rgba(255, 206, 86, 1)',
+	'rgba(75, 192, 192, 1)',
+	'rgba(153, 102, 255, 1)',
+	'rgba(255, 159, 64, 1)'
+]
+
 // Contexto do gráfico
 const ctx = document.getElementById('oChartDasBonecas')
 Chart.defaults.scale.ticks.beginAtZero = true
 
 
 /*========================================== Select Medidas separatrizes ================================== */
-
-
 // mostrar ou esconder o input de ordem
 if (tipoCalculo[1].checked) exibirOrdem.style.display = 'block'
 tipoCalculo[1].onchange = e => {
@@ -59,7 +62,6 @@ tipoCalculo[3].onchange = e => {
 
 	}
 }
-
 
 function carregar() {
 	const msSelect = document.querySelector('#msSelect')
@@ -93,33 +95,44 @@ function carregar() {
 			alert('Selecione')
 
 		}
-
 		return msValor = msRange.value
 	});
 }
-
 /*===================================================================================================================
 =============================================================== Botão calcular =======================================
 =======================================================================================================================*/
 function gerarTabela() {
-
 	NomeTabela.innerHTML = nomeVariavel.value
 	localDaTabela.style.display = 'block'
 
-
 	let dados = dadosVariavel.value.split(',')
 	let dadosSeparados = dados.filter((este, i) => dados.indexOf(este) === i)
+
+	let dadosQuick = dados
+	quickSort(dadosQuick)
+
+	let dadosSemRep = dadosQuick.filter((este, i) => dados.indexOf(este) === i)
 	let dpXi = dadosSeparados.map((dadosSeparados) => Number(dadosSeparados))
 
-	console.log('dadosVariavel: ' + dadosVariavel.value)
-	console.log('dados: ' + dados)
-	console.log('dadosSeparados: ' + dadosSeparados)
-	console.log('dpXi: ' + dpXi)
+	let dadosElemRepetidos = []
+	let comparacao = 0,
+		compCont = 0
+	let AuxComp = dadosQuick[0]
+
+	for (let i = 0; i < dadosQuick.length; i++) {
+		if (AuxComp == dadosQuick[i]) {
+			compCont++
+			dadosElemRepetidos[comparacao] = compCont
+		} else {
+			AuxComp = dadosQuick[i]
+			comparacao += 1
+			compCont = 1
+			dadosElemRepetidos[comparacao] = compCont
+		}
+	}
 
 	// Separando Elementos inseridos
 	let sep = dados.reduce((obj, item) => {
-		console.log(obj)
-		console.log(item)
 		item = item.replace(/\s/g, '') // tira os espacos
 		if (!obj[item]) {
 			obj[item] = 1
@@ -130,53 +143,42 @@ function gerarTabela() {
 
 	}, {})
 
-	console.log(sep)
-
-
-
-	let totPor = 0
+	let numTotalDados = 0
 	let fac = 0
 	let facP = 0
 
 	//pega o total separado
 	Object.keys(sep).forEach(item => {
-		totPor += sep[item]
+		numTotalDados += sep[item]
 	})
-
-	console.log('totPor: ' + totPor)
-
-	// =========================================== Para os Charts ===========================================
-
-	chartTeste = Object.values(sep) //Parametros usados para compor o gráfico
-
-	console.log('chartTeste: ' + chartTeste)
-
-
 	/*==========================================================================================================
 	==================================================== Nominal ===============================================
 	============================================================================================================ */
-
 	if (tipoCalculo[0].checked) {
 		// Inserindo valores na tabela nominal
+
 		corpoTabela.innerHTML = ''
 		cont = 0
 
-		Object.keys(sep).forEach(item => {
-			fac += sep[item]
-			facP += sep[item] / totPor * 100
-			corpoTabela.innerHTML += `<tr> <td>${item}</td> <td>${sep[item]}</td> <td>
-			${(sep[item] / totPor * 100).toFixed(2) }%</td> <td>${fac}</td> <td>${ facP.toFixed(2) }%</td> </tr>`
-			cont += sep[item]
+		for (i = 0; i < dadosElemRepetidos.length; i++) {
+			fac += dadosElemRepetidos[i]
+			facP += dadosElemRepetidos[i] / numTotalDados * 100
+			corpoTabela.innerHTML += `<tr> <td>${dadosSemRep[i]}</td>
+										   <td>${dadosElemRepetidos[i]}</td>
+										   <td>${(dadosElemRepetidos[i] / numTotalDados * 100).toFixed(2) }%</td>
+										   <td>${fac}</td>
+										   <td>${ facP.toFixed(2) }%</td>
+									  </tr>`
+			cont += dadosElemRepetidos[i]
 
-		})
+		}
 
 		corpoTabela.innerHTML += `<tr> <td id="total">Total</td>
-									<td id="total">${cont}</td> 
-									<td id="total"> 100% </td>
-									<td id="total"> </td>
-									<td id="total"></td>
-								</tr>`
-
+								   <td id="total">${cont}</td> 
+								   <td id="total"> 100% </td>
+								   <td id="total"> </td>
+								   <td id="total"></td>
+	 							 </tr>`
 		/*=============================================== Moda,Média,Mediana ========================================== */
 
 		moda.innerHTML = ""
@@ -186,8 +188,7 @@ function gerarTabela() {
 		CoeficienteVaria.innerHTML = ""
 		medidasS.innerHTML = ""
 
-
-		const msResposta = medidaSeparatriz(msValor, totPor, dados)
+		const msResposta = medidaSeparatriz(msValor, numTotalDados, dados)
 		const tesModa = modeString(dados)
 		const tesMediana = median(dados)
 
@@ -195,8 +196,7 @@ function gerarTabela() {
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
 
-		/*===================================================== T_T ================================================ */
-
+		// Grafico
 		chart = new Chart(ctx, {
 			//Tipo do gráfico
 			type: 'pie',
@@ -205,23 +205,9 @@ function gerarTabela() {
 				labels: dadosSeparados,
 				datasets: [{
 					label: NomeTabela,
-					data: chartTeste,
-					backgroundColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
-					borderColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
+					data: dadosElemRepetidos,
+					backgroundColor: colorsChart,
+					borderColor: colorsChart,
 					borderWidth: 1
 
 				}]
@@ -229,38 +215,40 @@ function gerarTabela() {
 			}
 		})
 
-		/*==========================================================================================================
-		==================================================== Ordinal ===============================================
-		============================================================================================================ */
-
+	/*==========================================================================================================
+	==================================================== Ordinal ===============================================
+	============================================================================================================ */
 	} else if (tipoCalculo[1].checked) {
-		
 
 		let ordemInput = document.querySelector('#ordem').value.split(',')
 		ordemInput = ordemInput.filter((este, i) => ordemInput.indexOf(este) === i)
 
-		console.log('ordemInput: ' + ordemInput)
-
-
-
 		const corpoTabela = document.querySelector('#corpo')
 		corpoTabela.innerHTML = ``
 		cont = 0
+
 		ordemInput.forEach(item => {
-			item = item.replace(/\s/g, '') // fazer testes
+			item = item.replace(/\s/g, '')// tirar espa
 			fac += sep[item]
-			facP += sep[item] / totPor * 100
-			corpoTabela.innerHTML += `<tr> <td>${item}</td> <td>${sep[item]}</td>
-			 <td>${(sep[item] / totPor * 100).toFixed(2) }%</td> <td> ${fac} </td> <td>${ facP.toFixed(2) }</td> </tr>`
+			facP += sep[item] / numTotalDados * 100
+			corpoTabela.innerHTML += `<tr> 
+										<td>${item}</td>
+										<td>${sep[item]}</td>
+										<td>${(sep[item] / numTotalDados * 100).toFixed(2) }%</td>
+										<td> ${fac} </td>
+										<td>${ facP.toFixed(2) }</td>
+									 </tr>`
 			cont += sep[item]
 		})
 
-		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td>
-		 <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
-
-
+		corpoTabela.innerHTML += `<tr> 
+									<td id="total">Total</td>
+									<td id="total">${cont}</td>
+									<td id='total'>100%</td>
+									<td id='total'></td>
+									<td id='total'></td>
+								 </tr>`
 		/*=============================================== Moda,Média,Mediana ========================================== */
-
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
 		media.innerHTML = ""
@@ -270,16 +258,13 @@ function gerarTabela() {
 
 		const tesModa = modeString(dados)
 		const tesMediana = median(dados)
-		const msResposta = medidaSeparatriz(msValor, totPor, dados)
+		const msResposta = medidaSeparatriz(msValor, numTotalDados, dados)
 
 		moda.innerHTML += `Moda:  ${tesModa}`
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
 
-		/*===================================================== T_T ================================================ */
-
-
-
+		// Grafico
 		chart = new Chart(ctx, {
 			//Tipo do gráfico
 			type: 'pie',
@@ -288,23 +273,9 @@ function gerarTabela() {
 				labels: dadosSeparados,
 				datasets: [{
 					label: NomeTabela,
-					data: chartTeste,
-					backgroundColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
-					borderColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
+					data: dadosElemRepetidos,
+					backgroundColor: colorsChart,
+					borderColor: colorsChart,
 					borderWidth: 1
 				}]
 
@@ -313,25 +284,43 @@ function gerarTabela() {
 
 		// Fim tabela ordinal
 
-		/*==========================================================================================================
-		==================================================== Descritiva ===============================================
-		============================================================================================================ */
-
+	/*==========================================================================================================
+	==================================================== Descritiva ============================================
+	============================================================================================================ */
 	} else if (tipoCalculo[2].checked) {
 		//Inserindo valores na tabela Discreta
+
 		const corpoTabela = document.querySelector('#corpo')
 		corpoTabela.innerHTML = ``
 		cont = 0
-		Object.keys(sep).forEach(item => {
-			fac += sep[item]
-			facP += sep[item] / totPor * 100
-			corpoTabela.innerHTML += `<tr> <td>${item}</td> <td>${sep[item]}</td> <td>${(sep[item] / totPor * 100).toFixed(2) }%</td> <td> ${fac} </td> <td>${ facP.toFixed(2) }</td> </tr>`
-			cont += sep[item]
-		})
-		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td> <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
+		// Object.keys(sep).forEach(item => {
+		// 	fac += sep[item]
+		// 	facP += sep[item] / numTotalDados * 100
+		// 	corpoTabela.innerHTML += `<tr> <td>${item}</td> <td>${sep[item]}</td> <td>${(sep[item] / numTotalDados * 100).toFixed(2) }%</td> <td> ${fac} </td> <td>${ facP.toFixed(2) }</td> </tr>`
+		// 	cont += sep[item]
+		// })
+		// corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td> <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
+		for (i = 0; i < dadosElemRepetidos.length; i++) {
+			fac += dadosElemRepetidos[i]
+			facP += dadosElemRepetidos[i] / numTotalDados * 100
+			corpoTabela.innerHTML += `<tr> <td>${dadosSemRep[i]}</td>
+										   <td>${dadosElemRepetidos[i]}</td>
+										   <td>${(dadosElemRepetidos[i] / numTotalDados * 100).toFixed(2) }%</td>
+										   <td>${fac}</td>
+										   <td>${facP.toFixed(2) }%</td>
+									  </tr>`
+			cont += dadosElemRepetidos[i]
+
+		}
+
+		corpoTabela.innerHTML += `<tr> <td id="total">Total</td>
+								   <td id="total">${cont}</td> 
+								   <td id="total"> 100% </td>
+								   <td id="total"> </td>
+								   <td id="total"></td>
+	 							 </tr>`
 
 		/*=============================================== Moda,Média,Mediana ========================================== */
-
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
 		media.innerHTML = ""
@@ -340,7 +329,7 @@ function gerarTabela() {
 		const tesModa = mode(dados)
 		const tesMedia = mean(dados)
 		const tesMediana = medianDesc(dados)
-		const msResposta = medidaSeparatriz(msValor, totPor, dados)
+		const msResposta = medidaSeparatriz(msValor, numTotalDados, dados)
 
 		moda.innerHTML += `Moda:  ${tesModa}`
 		media.innerHTML += `Média:  ${tesMedia}`
@@ -349,29 +338,21 @@ function gerarTabela() {
 
 
 		// Para o Desvio Padrão
-
-		let dpFi = []
 		let desvioP = 0
 		let cofVaria = 0
 
-
-		Object.keys(sep).forEach(item => {
-			dpFi.push(sep[item])
-
-		})
-
 		if (amostra.value === 'População') {
-			for (let i = 0; i < dpFi.length; i++) {
-				desvioP += ((dpXi[i] - tesMedia) ** 2) * dpFi[i]
+			for (let i = 0; i < dadosElemRepetidos.length; i++) {
+				desvioP += ((dpXi[i] - tesMedia) ** 2) * dadosElemRepetidos[i]
 			}
-			desvioP = Math.sqrt(desvioP / totPor)
+			desvioP = Math.sqrt(desvioP / numTotalDados)
 			cofVaria = (desvioP / tesMedia) * 100
 
 		} else {
-			for (let i = 0; i < dpFi.length; i++) {
-				desvioP += ((dpXi[i] - tesMedia) ** 2) * dpFi[i]
+			for (let i = 0; i < dadosElemRepetidos.length; i++) {
+				desvioP += ((dpXi[i] - tesMedia) ** 2) * dadosElemRepetidos[i]
 			}
-			desvioP = Math.sqrt(desvioP / (totPor - 1))
+			desvioP = Math.sqrt(desvioP / (numTotalDados - 1))
 			cofVaria = (desvioP / tesMedia) * 100
 		}
 
@@ -381,12 +362,7 @@ function gerarTabela() {
 		desvioPadrao.innerHTML += `Desvio Padrão : ${desvioP.toFixed(2)}`
 		CoeficienteVaria.innerHTML += `Coeficiente de Variação: ${cofVaria.toFixed(2)}%`
 
-
-
-
-		/*===================================================== T_T ================================================ */
-
-
+		//Grafico
 		chart = new Chart(ctx, {
 			//Tipo do gráfico
 			type: 'bar',
@@ -395,35 +371,17 @@ function gerarTabela() {
 				labels: dadosSeparados,
 				datasets: [{
 					label: NomeTabela,
-					data: chartTeste,
-					backgroundColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
-					borderColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
+					data: dadosElemRepetidos,
+					backgroundColor: colorsChart,
+					borderColor: colorsChart,
 					borderWidth: 1
 				}]
 
 			}
 		})
-
-		// Fim da Tabela Discreta
-
-		/*==========================================================================================================
-		==================================================== Continua ===============================================
-		============================================================================================================ */
-
+	/*==========================================================================================================
+	==================================================== Continua ===============================================
+	============================================================================================================ */
 	} else if (tipoCalculo[3].checked) {
 		// Inserindo valores na tabela continua
 
@@ -435,7 +393,7 @@ function gerarTabela() {
 			if (Number(item) < min) min = item
 		})
 
-		let at = (max - min) //altura
+		let intervalo = (max - min) //Intervalo
 
 		let k = Number(Math.sqrt(dados.length).toString()[0]) // raiz quadrada do total dos elementos
 		let kmais = k + 1
@@ -445,12 +403,11 @@ function gerarTabela() {
 		let ic
 		let linha
 
-
 		while (inteiro) {
-			at += 1
-			let ic1 = at / k
-			let ic2 = at / kmais
-			let ic3 = at / kmenos
+			intervalo += 1
+			let ic1 = intervalo / k
+			let ic2 = intervalo / kmais
+			let ic3 = intervalo / kmenos
 			if (Number.isInteger(ic1)) {
 				ic = ic1
 				linha = k
@@ -465,9 +422,9 @@ function gerarTabela() {
 				inteiro = false
 			}
 		}
-
 		/*=============================================== Var para Mediana ============================================== */
 		const frequencia = dados.length
+
 
 		let pos = frequencia / 2
 		let fimd = []
@@ -475,62 +432,64 @@ function gerarTabela() {
 		let fant = []
 		let xiAux = []
 
-		/*=================================================== T_T ================================================ */
-
 		corpoTabela.innerHTML = ''
 
 		cont = 0
 		ic = Number(ic) //intervalo
 		min = Number(min)
 
-		let tot = 0
-		let totVet = []
+		let repeatIntervalo = 0
+		let vetRepeat = []
 		let minAux = min
 
 		for (i = 0; i < linha; i++) {
-			tot = 0
+			repeatIntervalo = 0
 			dados.forEach((item) => {
 				if (Number(item) >= minAux && Number(item) < (minAux + ic)) {
-					tot += 1
+					repeatIntervalo += 1
 				}
 			})
-
 			fimd.push(minAux) // i
 			minAux += ic
 			maxMd.push(minAux)
-			totVet.push(tot)
+			vetRepeat.push(repeatIntervalo)
 		}
 
 		for (let i = 0; i < linha; i++) {
-			fiP = totVet[i] / totPor * 100
-			fac += totVet[i]
+			fiP = vetRepeat[i] / numTotalDados * 100
+			fac += vetRepeat[i]
 			fant.push(fac)
 			facP += fiP
 			xiAux[i] = (fimd[i] + maxMd[i]) / 2
-			corpoTabela.innerHTML += `<tr> <td>${Math.round(min)} |---- ${Math.round(min + ic)}</td> <td>${totVet[i]}</td> <td>${fiP.toFixed(0)}</td> <td>${fac}</td> <td>${facP.toFixed(0)}</td> <td>${xiAux[i]}</td>  </tr>`
+			corpoTabela.innerHTML += `<tr>
+										 <td>${Math.round(min)} |---- ${Math.round(min + ic)}</td>
+										 <td>${vetRepeat[i]}</td> 
+										 <td>${fiP.toFixed(0)}</td>
+										 <td>${fac}</td> <td>${facP.toFixed(0)}</td>
+										 <td>${xiAux[i]}</td>
+									  </tr>`
 			let lblChartContinua = []
-			cont += totVet[i]
+			cont += vetRepeat[i]
 			min += ic
 		}
-		corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td> <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
-		/*h = ic
-		fi = frequencia 
-		fimd = totvet*/
-		let iAux
-		let fiAuxi
-		let fimdAux
-		let fantAux
+		corpoTabela.innerHTML += `<tr>
+									<td id="total">Total</td>
+									<td id="total">${cont}</td>
+									<td id='total'>100%</td>
+									<td id='total'></td>
+									<td id='total'></td> 
+								 </tr>`
+
+		let iAux,fiAuxi,fimdAux,fantAux
 		let mediaCont = 0
-
 		/*=============================================== Mediana ============================================== */
-
 		for (let i = 0; i < linha; i++) {
 			if (fant[i] >= pos) {
 				if (i == 0) { // caso a mediana esteja no primeiro intervalo e o fant tenha que ter o valor de 0
 					iAux = fimd[i]
 					fiAuxi = frequencia
 					fantAux = 0
-					fimdAux = totVet[i]
+					fimdAux = vetRepeat[i]
 
 					medianaCont = iAux + ((fiAuxi / 2 - fantAux) / fimdAux) * ic
 
@@ -539,7 +498,7 @@ function gerarTabela() {
 					iAux = fimd[i]
 					fiAuxi = frequencia
 					fantAux = fant[i - 1]
-					fimdAux = totVet[i]
+					fimdAux = vetRepeat[i]
 
 					medianaCont = iAux + ((fiAuxi / 2 - fantAux) / fimdAux) * ic
 
@@ -550,11 +509,10 @@ function gerarTabela() {
 
 
 		for (let i = 0; i < linha; i++) { //Media
-			mediaCont += xiAux[i] * totVet[i] / frequencia
+			mediaCont += xiAux[i] * vetRepeat[i] / frequencia
 		}
-
 		/*============================================== moda,média,medin ======================================== */
-		const tesModa = modaCont(totVet, xiAux)
+		const tesModa = modaCont(vetRepeat, xiAux)
 
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
@@ -564,7 +522,7 @@ function gerarTabela() {
 		media.innerHTML = `Média: ${mediaCont.toFixed(2)}`
 		mediana.innerHTML += `Mediana:  ${medianaCont.toFixed(2)}`
 
-		let msPosAux = (msValor / 100) * totPor //Medidas Separatrizes
+		let msPosAux = (msValor / 100) * numTotalDados //Medidas Separatrizes
 		let msResposta
 
 
@@ -575,7 +533,7 @@ function gerarTabela() {
 					iAux = fimd[i]
 					fiAuxi = msPosAux
 					fantAux = 0
-					fimdAux = totVet[i]
+					fimdAux = vetRepeat[i]
 
 					msResposta = iAux + ((msPosAux - fantAux) / fimdAux) * ic
 
@@ -584,7 +542,7 @@ function gerarTabela() {
 					iAux = fimd[i]
 					fiAuxi = msPosAux
 					fantAux = fant[i - 1]
-					fimdAux = totVet[i]
+					fimdAux = vetRepeat[i]
 					msResposta = iAux + ((msPosAux - fantAux) / fimdAux) * ic
 
 					break
@@ -595,27 +553,24 @@ function gerarTabela() {
 		medidasS.innerHTML = ""
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta.toFixed(2)}`
 
-
-
 		// Para o Desvio Padrão
 		let desvioP = 0
 		let cofVaria = 0
 
 		if (amostra.value === 'População') {
-			for (let i = 0; i < totVet.length; i++) {
-				desvioP += ((xiAux[i] - mediaCont) ** 2) * totVet[i]
+			for (let i = 0; i < vetRepeat.length; i++) {
+				desvioP += ((xiAux[i] - mediaCont) ** 2) * vetRepeat[i]
 
 			}
-			desvioP = Math.sqrt(desvioP / totPor)
+			desvioP = Math.sqrt(desvioP / numTotalDados)
 			cofVaria = (desvioP / mediaCont) * 100
 
 		} else {
-			for (let i = 0; i < totVet.length; i++) {
-				desvioP += ((xiAux[i] - mediaCont) ** 2) * totVet[i]
-
-
+			for (let i = 0; i < vetRepeat.length; i++) {
+				desvioP += ((xiAux[i] - mediaCont) ** 2) * vetRepeat[i]
 			}
-			desvioP = Math.sqrt(desvioP / (totPor - 1))
+
+			desvioP = Math.sqrt(desvioP / (numTotalDados - 1))
 			cofVaria = (desvioP / mediaCont) * 100
 		}
 
@@ -625,13 +580,6 @@ function gerarTabela() {
 		desvioPadrao.innerHTML += `Desvio Padrão : ${desvioP.toFixed(2)}`
 		CoeficienteVaria.innerHTML += `Coeficiente de Variação: ${cofVaria.toFixed(2)}%`
 
-		/*=================================================== T_T ================================================ */
-
-
-		// var chartCont = fimd.map((fimd, maxMd) => )
-
-
-
 		chart = new Chart(ctx, {
 			type: 'bar',
 			//Especificações
@@ -639,23 +587,9 @@ function gerarTabela() {
 				labels: maxMd,
 				datasets: [{
 					label: NomeTabela,
-					data: totVet,
-					backgroundColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
-					borderColor: [
-						'rgba(255, 99, 132, 1)',
-						'rgba(54, 162, 235, 1)',
-						'rgba(255, 206, 86, 1)',
-						'rgba(75, 192, 192, 1)',
-						'rgba(153, 102, 255, 1)',
-						'rgba(255, 159, 64, 1)'
-					],
+					data: vetRepeat,
+					backgroundColor: colorsChart,
+					borderColor: colorsChart,
 					borderWidth: 1
 				}]
 			},
@@ -675,16 +609,11 @@ function gerarTabela() {
 				}
 			}
 		});
-
-
-		// Fim tabela continua
 	}
 
 	/*=========================================================================================================
 	============================================== Moda, Média e Mediana ======================================
 	=========================================================================================================== */
-
-
 	function modaCont(dadosVariavel, xiAux) {
 		let repetição = 0
 		let cont = 0
@@ -709,9 +638,6 @@ function gerarTabela() {
 
 		return moda
 	}
-
-
-
 
 	/**
 	 * A "MODA" é o número que mais se repete no dataset
@@ -749,7 +675,6 @@ function gerarTabela() {
 
 		return modes;
 	}
-
 
 	function modeString(dadosVariavel) {
 		// como o resultado pode ser bimodal ou multi-modal,
@@ -858,7 +783,6 @@ function gerarTabela() {
 
 }
 
-
 function medidaSeparatriz(msValor, totPor, dados) {
 	var msResultAux = parseInt((msValor / 100) * totPor) //posição
 	var msResult
@@ -868,7 +792,6 @@ function medidaSeparatriz(msValor, totPor, dados) {
 		}
 	}
 	return msResult
-
 }
 
 // Interação com o botão calcular 
@@ -879,4 +802,33 @@ document.querySelector('#BotaoCalcular').onclick = e => {
 
 function destroyChart() {
 	chart.destroy()
+}
+
+// ============================================= QuickSort ================================================
+function troca(vet, i, j) {
+	let aux = vet[i]
+	vet[i] = vet[j]
+	vet[j] = aux
+}
+
+function quickSort(vet, posIni = 0, posFim = vet.length - 1) {
+	if (posFim > posIni) {
+		const posPivot = posFim
+		let posDiv = posIni - 1
+
+		for (let i = posIni; i < posFim; i++) {
+			if (vet[i] < vet[posPivot]) {
+				posDiv++
+				troca(vet, i, posDiv)
+			}
+		}
+		posDiv++
+		troca(vet, posDiv, posPivot)
+
+		// Subvetor à esquerda
+		quickSort(vet, posIni, posDiv - 1)
+
+		// Subvetor à direita
+		quickSort(vet, posDiv + 1, posFim)
+	}
 }
