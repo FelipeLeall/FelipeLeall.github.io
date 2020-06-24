@@ -64,6 +64,7 @@ function binomial() {
     resultPro.innerHTML = ''
     resultMed.innerHTML = ''
     resultDP.innerHTML = ''
+    vari.innerHTML = ''
 
     // Printando HTML
     resultPro.innerHTML += `Probabilidade : ${(probabilidade*100).toFixed(2)}`
