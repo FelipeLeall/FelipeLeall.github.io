@@ -38,28 +38,24 @@ if (tipoCalculo[1].checked) exibirOrdem.style.display = 'block'
 tipoCalculo[1].onchange = e => {
 	if (e.isTrusted) {
 		exibirOrdem.style.display = 'block'
-
 	}
 }
 
 tipoCalculo[0].onchange = e => {
 	if (e.isTrusted) {
 		exibirOrdem.style.display = 'none'
-
 	}
 }
 
 tipoCalculo[2].onchange = e => {
 	if (e.isTrusted) {
 		exibirOrdem.style.display = 'none'
-
 	}
 }
 
 tipoCalculo[3].onchange = e => {
 	if (e.isTrusted) {
 		exibirOrdem.style.display = 'none'
-
 	}
 }
 
@@ -131,7 +127,8 @@ function gerarTabela() {
 		}
 	}
 
-	// Separando Elementos inseridos
+
+	// Criando objeto para auxiliar na quantitativa ordinal
 	let sep = dados.reduce((obj, item) => {
 		item = item.replace(/\s/g, '') // tira os espacos
 		if (!obj[item]) {
@@ -143,14 +140,9 @@ function gerarTabela() {
 
 	}, {})
 
-	let numTotalDados = 0
+	let numTotalDados = dados.length //pega o total de itens inseridos
 	let fac = 0
 	let facP = 0
-
-	//pega o total separado
-	Object.keys(sep).forEach(item => {
-		numTotalDados += sep[item]
-	})
 	/*==========================================================================================================
 	==================================================== Nominal ===============================================
 	============================================================================================================ */
@@ -158,8 +150,6 @@ function gerarTabela() {
 		// Inserindo valores na tabela nominal
 
 		corpoTabela.innerHTML = ''
-		cont = 0
-
 		for (i = 0; i < dadosElemRepetidos.length; i++) {
 			fac += dadosElemRepetidos[i]
 			facP += dadosElemRepetidos[i] / numTotalDados * 100
@@ -169,12 +159,10 @@ function gerarTabela() {
 										   <td>${fac}</td>
 										   <td>${ facP.toFixed(2) }%</td>
 									  </tr>`
-			cont += dadosElemRepetidos[i]
-
 		}
 
 		corpoTabela.innerHTML += `<tr> <td id="total">Total</td>
-								   <td id="total">${cont}</td> 
+								   <td id="total">${numTotalDados}</td> 
 								   <td id="total"> 100% </td>
 								   <td id="total"> </td>
 								   <td id="total"></td>
@@ -215,9 +203,9 @@ function gerarTabela() {
 			}
 		})
 
-	/*==========================================================================================================
-	==================================================== Ordinal ===============================================
-	============================================================================================================ */
+		/*==========================================================================================================
+		==================================================== Ordinal ===============================================
+		============================================================================================================ */
 	} else if (tipoCalculo[1].checked) {
 
 		let ordemInput = document.querySelector('#ordem').value.split(',')
@@ -225,10 +213,9 @@ function gerarTabela() {
 
 		const corpoTabela = document.querySelector('#corpo')
 		corpoTabela.innerHTML = ``
-		cont = 0
 
 		ordemInput.forEach(item => {
-			item = item.replace(/\s/g, '')// tirar espa
+			item = item.replace(/\s/g, '') // tirar espa
 			fac += sep[item]
 			facP += sep[item] / numTotalDados * 100
 			corpoTabela.innerHTML += `<tr> 
@@ -238,12 +225,11 @@ function gerarTabela() {
 										<td> ${fac} </td>
 										<td>${ facP.toFixed(2) }</td>
 									 </tr>`
-			cont += sep[item]
 		})
 
 		corpoTabela.innerHTML += `<tr> 
 									<td id="total">Total</td>
-									<td id="total">${cont}</td>
+									<td id="total">${numTotalDados}</td>
 									<td id='total'>100%</td>
 									<td id='total'></td>
 									<td id='total'></td>
@@ -284,37 +270,31 @@ function gerarTabela() {
 
 		// Fim tabela ordinal
 
-	/*==========================================================================================================
-	==================================================== Descritiva ============================================
-	============================================================================================================ */
+		/*==========================================================================================================
+		==================================================== Descritiva ============================================
+		============================================================================================================ */
 	} else if (tipoCalculo[2].checked) {
 		//Inserindo valores na tabela Discreta
 
 		const corpoTabela = document.querySelector('#corpo')
 		corpoTabela.innerHTML = ``
-		cont = 0
-		// Object.keys(sep).forEach(item => {
-		// 	fac += sep[item]
-		// 	facP += sep[item] / numTotalDados * 100
-		// 	corpoTabela.innerHTML += `<tr> <td>${item}</td> <td>${sep[item]}</td> <td>${(sep[item] / numTotalDados * 100).toFixed(2) }%</td> <td> ${fac} </td> <td>${ facP.toFixed(2) }</td> </tr>`
-		// 	cont += sep[item]
-		// })
-		// corpoTabela.innerHTML += `<tr> <td id="total">Total</td> <td id="total">${cont}</td> <td id='total'>100%</td> <td id='total'></td> <td id='total'></td> </tr>`
+
 		for (i = 0; i < dadosElemRepetidos.length; i++) {
 			fac += dadosElemRepetidos[i]
 			facP += dadosElemRepetidos[i] / numTotalDados * 100
-			corpoTabela.innerHTML += `<tr> <td>${dadosSemRep[i]}</td>
-										   <td>${dadosElemRepetidos[i]}</td>
-										   <td>${(dadosElemRepetidos[i] / numTotalDados * 100).toFixed(2) }%</td>
-										   <td>${fac}</td>
-										   <td>${facP.toFixed(2) }%</td>
+			corpoTabela.innerHTML += `<tr> 
+										<td>${dadosSemRep[i]}</td>
+										<td>${dadosElemRepetidos[i]}</td>
+										<td>${(dadosElemRepetidos[i] / numTotalDados * 100).toFixed(2) }%</td>
+										<td>${fac}</td>
+										<td>${facP.toFixed(2) }%</td>
 									  </tr>`
-			cont += dadosElemRepetidos[i]
 
 		}
 
-		corpoTabela.innerHTML += `<tr> <td id="total">Total</td>
-								   <td id="total">${cont}</td> 
+		corpoTabela.innerHTML += `<tr> 
+								   <td id="total">Total</td>
+								   <td id="total">${numTotalDados}</td> 
 								   <td id="total"> 100% </td>
 								   <td id="total"> </td>
 								   <td id="total"></td>
@@ -379,9 +359,9 @@ function gerarTabela() {
 
 			}
 		})
-	/*==========================================================================================================
-	==================================================== Continua ===============================================
-	============================================================================================================ */
+		/*==========================================================================================================
+		==================================================== Continua ===============================================
+		============================================================================================================ */
 	} else if (tipoCalculo[3].checked) {
 		// Inserindo valores na tabela continua
 
@@ -480,7 +460,7 @@ function gerarTabela() {
 									<td id='total'></td> 
 								 </tr>`
 
-		let iAux,fiAuxi,fimdAux,fantAux
+		let iAux, fiAuxi, fimdAux, fantAux
 		let mediaCont = 0
 		/*=============================================== Mediana ============================================== */
 		for (let i = 0; i < linha; i++) {
