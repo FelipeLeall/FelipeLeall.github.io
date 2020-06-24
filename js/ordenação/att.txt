@@ -1,0 +1,3 @@
+Fausto se você caiu nessa pasta eu posso me explicar....
+
+Brincadeira a parte o quick sort por hora esta sendo usado apenas no arquivo descritiva.js
