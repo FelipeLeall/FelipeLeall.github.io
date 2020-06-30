@@ -110,9 +110,10 @@ function apresentaChart(x, y, ctx, a, b) {
                     type: 'line',
                     backgrouncolor: 'rgba(0, 0, 255)',
                     data:regLine,
-                    fill: false
+                    fill: false,
+                    pointRadius:0
                 }]
-            },
+            }
         })
 
 
@@ -124,7 +125,7 @@ function atualizar(){
     let nvY = Number(novoy.value)
     if(!nvX && !nvY){
         alerta.style.display = 'block'
-    }else{
+    }else if(!nvY){
         alerta.style.display = 'none'
 
         let regressao = a*nvX+b
@@ -139,6 +140,21 @@ function atualizar(){
             y: (parseFloat(Math.round(parseFloat(a) * nvX + parseFloat(b), 2)))
         })
 
+        chart.update()
+    }else{
+        alerta.style.display = 'none'
+
+        let regressao = (nvY-(b))/a
+
+        dataBubble.push({
+            x:  regressao,
+            y: nvY,
+            r: 5
+        })
+        regLine.push({
+            x:  regressao,
+            y: (parseFloat(Math.round(parseFloat(a) *  regressao + parseFloat(b), 2)))
+        })
         chart.update()
     }
 }
