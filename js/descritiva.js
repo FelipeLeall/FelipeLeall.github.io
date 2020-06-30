@@ -127,6 +127,7 @@ function gerarTabela() {
 		}
 	}
 
+	
 
 	// Criando objeto para auxiliar na quantitativa ordinal
 	let sep = dados.reduce((obj, item) => {
@@ -143,6 +144,7 @@ function gerarTabela() {
 	let numTotalDados = dados.length //pega o total de itens inseridos
 	let fac = 0
 	let facP = 0
+	let dadosElemRepetidosCharts = dadosCharts(numTotalDados, dadosElemRepetidos)
 	/*==========================================================================================================
 	==================================================== Nominal ===============================================
 	============================================================================================================ */
@@ -193,7 +195,7 @@ function gerarTabela() {
 				labels: dadosSeparados,
 				datasets: [{
 					label: NomeTabela,
-					data: dadosElemRepetidos,
+					data: dadosElemRepetidosCharts,
 					backgroundColor: colorsChart,
 					borderColor: colorsChart,
 					borderWidth: 1
@@ -259,7 +261,7 @@ function gerarTabela() {
 				labels: dadosSeparados,
 				datasets: [{
 					label: NomeTabela,
-					data: dadosElemRepetidos,
+					data: dadosElemRepetidosCharts,
 					backgroundColor: colorsChart,
 					borderColor: colorsChart,
 					borderWidth: 1
@@ -351,7 +353,7 @@ function gerarTabela() {
 				labels: dadosSeparados,
 				datasets: [{
 					label: NomeTabela,
-					data: dadosElemRepetidos,
+					data: dadosElemRepetidosCharts,
 					backgroundColor: colorsChart,
 					borderColor: colorsChart,
 					borderWidth: 1
@@ -554,12 +556,17 @@ function gerarTabela() {
 			cofVaria = (desvioP / mediaCont) * 100
 		}
 
+		console.log(vetRepeat)
+		
+
 		desvioPadrao.innerHTML = ""
 		CoeficienteVaria.innerHTML = ""
 
 		desvioPadrao.innerHTML += `Desvio Padrão : ${desvioP.toFixed(2)}`
 		CoeficienteVaria.innerHTML += `Coeficiente de Variação: ${cofVaria.toFixed(2)}%`
 
+
+		let vetRepeatChart = dadosCharts(numTotalDados, vetRepeat)
 		chart = new Chart(ctx, {
 			type: 'bar',
 			//Especificações
@@ -567,7 +574,7 @@ function gerarTabela() {
 				labels: maxMd,
 				datasets: [{
 					label: NomeTabela,
-					data: vetRepeat,
+					data: vetRepeatChart,
 					backgroundColor: colorsChart,
 					borderColor: colorsChart,
 					borderWidth: 1
@@ -590,6 +597,7 @@ function gerarTabela() {
 			}
 		});
 	}
+
 
 	/*=========================================================================================================
 	============================================== Moda, Média e Mediana ======================================
@@ -811,4 +819,12 @@ function quickSort(vet, posIni = 0, posFim = vet.length - 1) {
 		// Subvetor à direita
 		quickSort(vet, posDiv + 1, posFim)
 	}
+}
+
+function dadosCharts(total, dados){
+	let porcentual = []
+	for(let i=0; i < dados.length; i++){
+		porcentual[i] = Number(((dados[i]/total)*100).toFixed(2))
+	}
+	return porcentual	
 }

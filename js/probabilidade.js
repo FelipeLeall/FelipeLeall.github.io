@@ -51,7 +51,6 @@ function binomial() {
     let probabilidade = 0
 
     for (let i = 0; i < k.length; i++) {
-        console.log(analiseCombinatoria(n, k[i]) * Math.pow(p, k[i]) * Math.pow(q, (n - k[i])))
         probabilidade += analiseCombinatoria(n, k[i]) * Math.pow(p, k[i]) * Math.pow(q, (n - k[i]))
     }
 
