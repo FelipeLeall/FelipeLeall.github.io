@@ -3,6 +3,7 @@ let resultPro = document.querySelector('#resultPro')
 let resultMed = document.querySelector('#resultMed')
 let resultDP = document.querySelector('#resultDP')
 let vari = document.querySelector('#variDP')
+let printResposta = document.querySelector('#printProbabilidade')
 
 function buttonBi() {
     let divBi = document.querySelector('#divBi')
@@ -58,6 +59,7 @@ function binomial() {
     media = n * p
     desvioPadrao = Math.sqrt(n * p * q)
 
+    printResposta.style.display = 'block'
 
     // Limpando HTML
     resultPro.innerHTML = ''
@@ -209,6 +211,8 @@ function normal() {
     probabilidadeResult = (probabilidadeResult * 100).toFixed(2)
     console.log(probabilidadeResult)
 
+    printResposta.style.display = 'block'
+
     // Limpando HTML
     resultPro.innerHTML = ''
     resultMed.innerHTML = ''
@@ -257,9 +261,7 @@ function uniforme() {
             break
     }
 
-    console.log(intervaloAux)
-    console.log(resultado)
-
+    printResposta.style.display = 'block'
 
     // Limpando HTML
     resultPro.innerHTML = ''
@@ -271,7 +273,7 @@ function uniforme() {
     resultPro.innerHTML += `Probabilidade : ${resultado}`
     resultMed.innerHTML += `Média : ${media}`
     resultDP.innerHTML += `Desvio Padrão : ${desvioPadrao}`
-    vari.innerHTML += `Variancia : ${variancia} `
+    vari.innerHTML += `Coeficiente de varição : ${variancia} `
 
 }
 

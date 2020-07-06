@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network Estatistic</title>
+    <title>Network Statistic</title>
     <link rel="icon" href="img/Logo Branco.png">
 
     <!-- CSS -->
@@ -21,7 +21,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
         <a class="navbar-brand" href="index.html">
-            <strong>Network Estatistic</strong>
+            <strong>Network Statistic</strong>
         </a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -31,11 +31,8 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#"><strong>Home</strong> <span class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./index.html"><strong>Descritiva</strong></a>
+                    <a class="nav-link" href="./descritiva.html"><strong>Descritiva</strong></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="./probabilidade.html"><strong>Probabilidade</strong></a>
@@ -49,122 +46,125 @@
     <!-- Fim Navbar -->
 
     <div class="container-fluid">
-        <div class="row" >
-          <div class="col-md-6" id="styleDados">
+        <div class="row">
+            <div class="col-md-4 col-sm-12" id="styleDados">
 
-            <div id="buttons">
-                <ul>
-                    <button type="button" id="btnBi" class="btn btn-outline-primary" onclick="buttonBi()">Binomial</button>
-                    <button type="button" id="btnNor" class="btn btn-outline-primary" onclick="buttonNor()">Normal</button>
-                    <button type="button" id="btnUni" class="btn btn-outline-primary" onclick="buttonUni()">Uniforme</button>
-                </ul>
+                <div id="buttons">
+
+                    <button type="button" id="btnBi" class="btn btn-dark btn-lg" aria-pressed="true"
+                        onclick="buttonBi()">Binomial</button>
+                    <button type="button" id="btnNor" class="btn btn-dark btn-lg" aria-pressed="true"
+                        onclick="buttonNor()">Normal</button>
+                    <button type="button" id="btnUni" class="btn btn-dark btn-lg" aria-pressed="true"
+                        onclick="buttonUni()">Uniforme</button>
+
+                </div>
+                <hr>
+                <!-- ========================================================= Binomial ======================================================= -->
+                <!-- ========================================================================================================================== -->
+                <div id="divBi">
+                    <h5 style="text-align: center;"><strong> Binomial </strong></h5>
+                    <hr>
+                    <div class="form-group">
+                        <label for="amostra">Amostra</label>
+                        <input type="text" class="form-control" id="amostra" placeholder="">
+                        <small class="form-text text-muted"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sucesso">Sucesso</label>
+                        <input type="text" class="form-control" id="sucesso" placeholder="Insira o Sucesso em porcentagem (1 a 100)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fracasso">Fracasso</label>
+                        <input type="text" class="form-control" id="fracasso" placeholder="Insira o Fracasso em porcentagem (1 a 100)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="evento">Evento</label>
+                        <input type="text" class="form-control" id="evento" placeholder="Utilizar virgula ( , ) para separar os eventos">
+                    </div>
+
+                    <button type="submit" class="btn btn-dark btn-lg btn-block" id="calcular" onclick="binomial()">Calcular</button>
+
+                </div>
+
+                <!-- =========================================================== Normal ======================================================= -->
+                <!-- ========================================================================================================================== -->
+
+                <div id="divNor" style="display: none;">
+                    <h5 style="text-align: center;"><strong> Normal </strong></h5>
+                    <hr>
+                    <div class="form-group">
+                        <label for="media">Média</label>
+                        <input type="text" class="form-control" id="media">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="desvioPadrao">Desvio Padrão</label>
+                        <input type="text" class="form-control" id="desvioPadrao">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Selecione uma opção</label>
+                        <select class="form-control" id="select">
+                            <option value="entre">Entre dois números</option>
+                            <option value="maior">Maior que</option>
+                            <option value="menor">Menor que</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="intervalo">Intervalo</label>
+                        <input type="text" class="form-control" id="intervalo" placeholder="Utilizar virgula ( , ) para separar os intervalos">
+                        <small class="form-text text-muted"></small>
+                    </div>
+
+                    <button type="submit" class="btn btn-dark btn-lg btn-block" onclick="normal()">Calcular</button>
+                </div>
+
+                <!-- ========================================================= Uniforme ======================================================= -->
+                <!-- ========================================================================================================================== -->
+
+                <div id="divUni" style="display: none;">
+                    <h5 style="text-align: center;"><strong> Uniforme </strong></h5>
+                    <hr>
+                    <div class="form-group">
+                        <label for="pontoMin">Ponto mínimo</label>
+                        <input type="text" class="form-control" id="pontoMin">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pontoMax">Ponto máximo</label>
+                        <input type="text" class="form-control" id="pontoMax">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleFormControlSelect1">Selecione uma opção</label>
+                        <select class="form-control" id="selectUni">
+                            <option value="entre">Entre dois números</option>
+                            <option value="maior">Maior que</option>
+                            <option value="menor">Menor que</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="intervalo">Intervalo</label>
+                        <input type="text" class="form-control" id="intervaloUni" placeholder="Utilizar virgula ( , ) para separar os intervalos">
+                    </div>
+
+                    <button type="submit" class="btn btn-dark btn-lg btn-block" id="calcular" onclick="uniforme()">Calcular</button>
+                </div>
+
             </div>
-            <!-- ========================================================= Binomial ======================================================= -->
-            <!-- ========================================================================================================================== -->
-            <div id="divBi">
-                <div class="form-group">
-                  <label for="amostra">Amostra</label>
-                  <input type="text" class="form-control" id="amostra">
-                  <small class="form-text text-muted"></small>
-                </div>
 
-                <div class="form-group">
-                    <label for="sucesso">Sucesso</label>
-                    <input type="text" class="form-control" id="sucesso">
-                    <small class="form-text text-muted"></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="fracasso">Fracasso</label>
-                    <input type="text" class="form-control" id="fracasso">
-                    <small class="form-text text-muted"></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="evento">Evento</label>
-                    <input type="text" class="form-control" id="evento">
-                    <small class="form-text text-muted"></small>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="calcular" onclick="binomial()">Calcular</button>
-
+            <div class="col-md-4 col-sm-12" id="printProbabilidade">
+                <h4 id="resultPro"></h4>
+                <h4 id="resultMed"></h4>
+                <h4 id="resultDP"></h4>
+                <h4 id="variDP"></h4>
             </div>
-
-            <!-- =========================================================== Normal ======================================================= -->
-            <!-- ========================================================================================================================== -->
-
-            <div id="divNor" style="display: none;">
-                <div class="form-group">
-                  <label for="media">Média</label>
-                  <input type="text" class="form-control" id="media">
-                  <small class="form-text text-muted"></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="desvioPadrao">Desvio Padrão</label>
-                    <input type="text" class="form-control" id="desvioPadrao">
-                    <small class="form-text text-muted"></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">Selecione uma opção</label>
-                    <select class="form-control" id="select">
-                      <option value="entre">Entre dois números</option>
-                      <option value="maior">Maior que</option>
-                      <option value="menor">Menor que</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="intervalo">Intervalo</label>
-                    <input type="text" class="form-control" id="intervalo">
-                    <small class="form-text text-muted"></small>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="calcular" onclick="normal()">Calcular</button>
-            </div>
-
-            <!-- ========================================================= Uniforme ======================================================= -->
-            <!-- ========================================================================================================================== -->
-
-            <div id="divUni" style="display: none;">
-                <div class="form-group">
-                  <label for="pontoMin">Ponto mínimo</label>
-                  <input type="text" class="form-control" id="pontoMin">
-                  <small class="form-text text-muted"></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="pontoMax">Ponto máximo</label>
-                    <input type="text" class="form-control" id="pontoMax">
-                    <small class="form-text text-muted"></small>
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">Selecione uma opção</label>
-                    <select class="form-control" id="selectUni">
-                      <option value="entre">Entre dois números</option>
-                      <option value="maior">Maior que</option>
-                      <option value="menor">Menor que</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="intervalo">Intervalo</label>
-                    <input type="text" class="form-control" id="intervaloUni">
-                    <small class="form-text text-muted"></small>
-                </div>
-
-                <button type="submit" class="btn btn-primary" id="calcular" onclick="uniforme()">Calcular</button>
-            </div>
-
-          </div>
-          <div class="col-md-4" id="styleDados">
-              <h4 id="resultPro"></h4>
-              <h4 id="resultMed"></h4>
-              <h4 id="resultDP"></h4>
-              <h4 id="variDP"></h4>
-          </div>
         </div>
     </div>
 

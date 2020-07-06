@@ -1,11 +1,84 @@
+body{
+    background-color: silver;
+}
+
+#teste{
+    align-items: center;
+    justify-items: center;
+}
+
 #styleDados{
     background-color: whitesmoke;
     padding: 10px 10px;
-    margin-left: 20px;
-    margin-top: 15px;
-    border-radius: 5px
-} 
+    margin: 20px;
+    border-radius: 5px;
+}
+
+#divRadius{
+    padding: 12px;
+    /* background-color: skyblue; */
+}
+
+#radiusCheck{ 
+    margin:5px;
+}
+
+#showTabela{
+    padding: 10px 10px;
+    margin: 20px;
+}
 
 #buttons{
     text-align: center;
+}
+
+#divRespostas{
+    padding: 10px 10px;
+    margin: 20px;
+    width: 80%;
+}
+
+#chartConfig{
+    margin: 10px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+}
+
+
+/* Probabilidade */
+#printProbabilidade{
+    background-color: whitesmoke;
+    padding: 10px 10px;
+    margin: 20px;
+    border-radius: 5px;
+    display: none;
+    height: 100%;
+}
+
+/* Correlação e Regreção */
+#formCorre{
+    background-color: whitesmoke;
+    padding: 10px 10px;
+    margin: 20px;
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+}
+
+#resultado{
+    margin: 20px;
+    padding: 10px 10px;
+    height: 100%;
+    width: 100%;
+}
+
+/* Homee */
+
+#cardHome{
+    background-color: whitesmoke;
+    padding: 10px 10px;
+    margin: 20px;
+    border-radius: 5px;
 }

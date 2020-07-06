@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Statistic</title>
+    <link rel="icon" href="img/Logo Branco.png">
+
+    <!-- CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilo/stilo.css">
+
+    <!-- Graficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <a class="navbar-brand" href="index.html">
+            <strong>Network Statistic</strong>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="./descritiva.html"><strong>Descritiva</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./probabilidade.html"><strong>Probabilidade</strong></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="correlacao.html"><strong> Correlação e Regressão</strong></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Fim Navbar -->
+
+    <div class="container-fluid">
+        <div>
+            <div class="row" id="styleDados">
+                <!-- Escolher Conta -->
+                <div class="col-md-3 col-sm-10" id="divRadius">
+
+                    <h4>Estastística Descritiva</h4>
+                    <br>
+
+                    <div class="form-check" id="radiusCheck">
+                        <input class="form-check-input" type="radio" name="calculoSelecionado" id="qualiNominal"
+                            value="option1" checked>
+                        <label class="form-check-label" for="qualiNominal"><strong>Qualitativa
+                                Nominal</strong></label>
+                    </div>
+
+                    <div class="form-check" id="radiusCheck">
+                        <input class="form-check-input" type="radio" name="calculoSelecionado" id="qualiOrdinal"
+                            value="option2">
+                        <label class="form-check-label" for="qualiOrdinal"><strong>Qualitativa
+                                Ordinal</strong></label>
+                    </div>
+
+                    <div class="form-check" id="radiusCheck">
+                        <input class="form-check-input" type="radio" name="calculoSelecionado" id="quantDiscreta"
+                            value="option3">
+                        <label class="form-check-label" for="quantDiscreta"><strong>Quantitativa
+                                Discreta</strong></label>
+                    </div>
+
+                    <div class="form-check" id="radiusCheck">
+                        <input class="form-check-input" type="radio" name="calculoSelecionado" id="quantContinua"
+                            value="option4">
+                        <label class="form-check-label" for="quantContinua"><strong>Quantitativa
+                                Continua</strong></label>
+                    </div>
+
+                </div>
+
+
+                <diV class="col-md-5 col-sm-10" id="formDiv">
+
+                    <div class="form-group">
+                        <label for="nomeVariavel"><strong>Nome da Variável</strong></label>
+                        <input type="text" class="form-control" id="varNome" placeholder="Variável">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dadosVariavel"><strong>Valores das Variáveis</strong></label>
+                        <input type="" class="form-control" id="varDados"
+                            placeholder="Colocar os dados separados com virgula ( , )">
+                    </div>
+
+                    <div class="form-group" id="varOrdem" style="display: none;">
+                        <label for="ordem"><strong>Digite a ordem</strong></label>
+                        <input type="" class="form-control" id="ordem"
+                            placeholder="Indique a ordem separando os dados com a virgula ( , )">
+                    </div>
+                </diV>
+
+                <div class="col-md-4 col-sm-10" id="medidasDiv">
+                    <div onchange="carregar()">
+                        <label for="exampleFormControlSelect1"><strong>Medidas Separatriz</strong></label>
+                        <select class="form-control" id="msSelect">
+                            <!-- <option value="Escolha">Escolha</option> -->
+                            <option value="Quartil">Quartil</option>
+                            <option value="Quintil">Quintil</option>
+                            <option value="Decil">Decil</option>
+                            <option value="Porcentil">Porcentil</option>
+                        </select>
+
+                        <br>
+                        <div class="form-group">
+                            <span style="text-align: center;" id="msSpan">50</span>
+                            <input type="range" class="form-control-range" id="msRange">
+                        </div>
+                    </div>
+
+                    <select class="form-control" name="tipoAmostra" id="Amostra" style="margin-top: 20px;">
+                        <option value="População"><strong>População</strong></option>
+                        <option value="Amostra"><strong>Amostra</strong></option>
+                    </select>
+
+                    <br>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="inputGroupFile01"
+                                aria-describedby="inputGroupFileAddon01">
+                            <label class="custom-file-label" for="inputGroupFile01"> Inserir
+                                arquivo</label>
+                        </div>
+                    </div>
+
+                    <br>
+                    <br>
+                    <button type="submit" id="BotaoCalcular" class="btn btn-dark" style="margin-left:25px;">Calcular
+                    </button>
+
+                    <button type="submit" id="destroyChart" class="btn btn-danger" style="margin-left:25px;"
+                        onclick="destroyChart()">Apagar Gráfico
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-10">
+                    <div id="showTabela" style="display: none;">
+                        <table class="container-fluid table table-dark table-striped table-hover ">
+                            <thead id="headTabela">
+                                <th id="variavelNome">Variável</th>
+                                <th>Fi</th>
+                                <th>Fi%</th>
+                                <th>Fac</th>
+                                <th>Fac%</th>
+                            </thead>
+                            <tbody id="corpo">
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-10" id="divRespostas" style="display: none;">
+                    <div class="row  justify-content-center">
+                        <div class="col-md-12 col-sm-12 align-self-center" id="styleDados">
+                            <h6 id="mode"></h6>
+                            <h6 id="mean"></h6>
+                            <h6 id="median"></h6>
+                            <h6 id="desvioP"></h6>
+                            <h6 id="cofVaria"></h6>
+                            <h6 id="medidasS"></h6>
+                        </div>
+
+                        <div class="col-md-12 col-sm-12 align-self-center"" id="chartConfig">
+                            <div class="chart-wrapper">
+                                <canvas id="oChartDasBonecas"></canvas>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- JS -->
+            <script src="./js/jquery.js"></script>
+            <script src="js/bootstrap.min.js"></script>
+            <script type="text/javascript" src="./js/descritiva.js"></script>
+</body>
+
+</html>

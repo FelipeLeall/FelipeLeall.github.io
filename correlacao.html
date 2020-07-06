@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Network Estatistic</title>
+  <title>Network Statistic</title>
   <link rel="icon" href="img/Logo Branco.png" />
 
   <!-- CSS -->
@@ -19,7 +19,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="index.html">
-      <strong>Network Estatistic</strong>
+      <strong>Network Statistic</strong>
     </a>
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -29,11 +29,8 @@
 
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item active">
-          <a class="nav-link" href="#"><strong>Home</strong> <span class="sr-only">(current)</span></a>
-        </li>
         <li class="nav-item">
-          <a class="nav-link" href="./index.html"><strong>Descritiva</strong></a>
+          <a class="nav-link" href="./descritiva.html"><strong>Descritiva</strong></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="./probabilidade.html"><strong>Probabilidade</strong></a>
@@ -46,21 +43,21 @@
   </nav>
   <!-- Fim Navbar -->
 
-  <main style="margin: 10px 20px;">
+  <div class="container-fluid">
     <!-- Imput de dados -->
+    <div class="row">
+      <div class="col-md-4 col-sm-12" id="formCorre">
+        <h4 style="text-align: center;">Correlação e Regressão</h4>
+        <hr>
+        <br>
+        <div class="form-group">
+          <label for="valoresX"><strong>Valores de X</strong></label>
+          <input type="" class="form-control" id="valoresx" placeholder="Colocar os dados separados com ','" />
+        </div>
 
-    <div class="row form-group">
-      <div class="col-4" id="styleDados">
-        <div class="container-fluid">
-          <div class="form-group">
-            <label for="valoresX"><strong>Valores de X</strong></label>
-            <input type="" class="form-control" id="valoresx" placeholder="Colocar os dados separados com ','" />
-          </div>
-
-          <div class="form-group">
-            <label for="dadosVariavel"><strong>Valores de Y</strong></label>
-            <input type="" class="form-control" id="valoresy" placeholder="Colocar os dados separados com ','" />
-          </div>
+        <div class="form-group">
+          <label for="dadosVariavel"><strong>Valores de Y</strong></label>
+          <input type="" class="form-control" id="valoresy" placeholder="Colocar os dados separados com ','" />
         </div>
         <button type="submit" id="BotaoCalcular" class="btn btn-dark" onclick="correlacao()" style="margin-left: 25px;">
           Calcular
@@ -83,17 +80,26 @@
             Atualizar
           </button>
         </div>
-
       </div>
 
-      <div class="chart-wrapper col-6" id="resultado">
+      <div class="col-md-6 col-sm-12" id="resultado">
+        <!-- Alert -->
         <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alerta" style="display:none;">
           <strong>Deve ser inserido um valor para Atualizar o Grafico</strong>
         </div>
-        <canvas id="chartCorre"></canvas>
+
+        <div id="correAuxi" style="display: none;">
+            <h4 id="correResult"></h4>
+            <h4 id="equacaoReg"></h4>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-wrapper">
+          <canvas id="chartCorre"></canvas>
+        </div>
       </div>
     </div>
-  </main>
+  </div>
 
   <!-- JS -->
   <script src="./js/jquery.js"></script>

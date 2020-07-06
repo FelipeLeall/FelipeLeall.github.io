@@ -1,7 +1,7 @@
 // Capturando os elementos
 const tipoCalculo = document.getElementsByName('calculoSelecionado')
 const exibirOrdem = document.querySelector('#varOrdem')
-const localDaTabela = document.querySelector(`#calculoNominal`)
+const localDaTabela = document.querySelector(`#showTabela`)
 const NomeTabela = document.querySelector('#variavelNome')
 const nomeVariavel = document.querySelector('#varNome')
 const dadosVariavel = document.querySelector('#varDados')
@@ -14,6 +14,7 @@ const desvioPadrao = document.querySelector('#desvioP')
 const CoeficienteVaria = document.querySelector('#cofVaria')
 const amostra = document.querySelector('#Amostra')
 const medidasS = document.querySelector('#medidasS')
+const divRespostas = document.querySelector('#divRespostas')
 
 /*=========================================================================================================
 ================================================== Charts =================================================
@@ -59,38 +60,33 @@ tipoCalculo[3].onchange = e => {
 	}
 }
 
+const msSelect = document.querySelector('#msSelect')
+const msSpan = document.querySelector('#msSpan')
+const msRange = document.querySelector('#msRange')
+
+var msValor = 0
+
 function carregar() {
-	const msSelect = document.querySelector('#msSelect')
-	const msSpan = document.querySelector('#msSpan')
-	const msRange = document.querySelector('#msRange')
-
-
 	msRange.addEventListener('input', function () {
 		msSpan.textContent = this.value;
 		if (msSelect.value == "Quartil") {
 			msRange.step = 25
 			msRange.min = 25
 			msRange.max = 100
-		}
-		if (msSelect.value == "Quintil") {
+		}else if (msSelect.value == "Quintil") {
 			msRange.step = 20
 			msRange.min = 20
 			msRange.max = 100
-		}
-		if (msSelect.value == "Decil") {
+		}else if (msSelect.value == "Decil") {
 			msRange.step = 10
 			msRange.min = 10
 			msRange.max = 100
-		}
-		if (msSelect.value == "Porcentil") {
+		}else if (msSelect.value == "Porcentil") {
 			msRange.step = 1
 			msRange.min = 1
 			msRange.max = 100
 		}
-		if (msSelect.value == "Escolha") {
-			alert('Selecione')
 
-		}
 		return msValor = msRange.value
 	});
 }
@@ -171,6 +167,8 @@ function gerarTabela() {
 	 							 </tr>`
 		/*=============================================== Moda,Média,Mediana ========================================== */
 
+		divRespostas.style.display = 'block'
+
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
 		media.innerHTML = ""
@@ -178,6 +176,7 @@ function gerarTabela() {
 		CoeficienteVaria.innerHTML = ""
 		medidasS.innerHTML = ""
 
+		console.log(msValor)
 		const msResposta = medidaSeparatriz(msValor, numTotalDados, dados)
 		const tesModa = modeString(dados)
 		const tesMediana = median(dados)
@@ -237,6 +236,8 @@ function gerarTabela() {
 									<td id='total'></td>
 								 </tr>`
 		/*=============================================== Moda,Média,Mediana ========================================== */
+		divRespostas.style.display = 'block'
+
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
 		media.innerHTML = ""
@@ -303,6 +304,8 @@ function gerarTabela() {
 	 							 </tr>`
 
 		/*=============================================== Moda,Média,Mediana ========================================== */
+		divRespostas.style.display = 'block'
+
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
 		media.innerHTML = ""
@@ -494,6 +497,8 @@ function gerarTabela() {
 			mediaCont += xiAux[i] * vetRepeat[i] / frequencia
 		}
 		/*============================================== moda,média,medin ======================================== */
+		divRespostas.style.display = 'block'
+
 		const tesModa = modaCont(vetRepeat, xiAux)
 
 		moda.innerHTML = ""
