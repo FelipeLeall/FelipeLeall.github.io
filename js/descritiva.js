@@ -20,7 +20,7 @@ const divRespostas = document.querySelector('#divRespostas')
 /*=========================================================================================================
 ================================================== Charts =================================================
 =========================================================================================================== */
-let chart = undefined
+let chart
 let colorsChart = ['rgba(255, 99, 132, 1)',
 	'rgba(54, 162, 235, 1)',
 	'rgba(255, 206, 86, 1)',
@@ -33,7 +33,6 @@ let colorsChart = ['rgba(255, 99, 132, 1)',
 	'rgba(153, 229, 80, 1)',
 	'rgb(118, 66, 138, 1)'
 ]
-
 
 
 // Contexto do gráfico
@@ -194,12 +193,6 @@ function gerarTabela() {
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
 
-		// oChartDelas.innerHTML = '&nbsp;'
-		// $('#oChartDelas').append('<canvas id=oChartDasBonecas><canvas>')
-		// ctx = $("oChartDasBonecas").get(0).getContext('2d')
-
-
-		chart = undefined
 		// Grafico
 		chart = new Chart(ctx, {
 			//Tipo do gráfico
@@ -217,8 +210,8 @@ function gerarTabela() {
 				}]
 
 			},
-			// options: options
 		})
+
 
 		/*==========================================================================================================
 		==================================================== Ordinal ===============================================
@@ -268,10 +261,6 @@ function gerarTabela() {
 		moda.innerHTML += `Moda:  ${tesModa}`
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
-
-		// oChartDelas.innerHTML = '&nbsp;'
-		// $('#oChartDelas').append('<canvas id="oChartDasBonecas"><canvas>')
-		// ctx = $("oChartDasBonecas").get(0).getContext('2d')
 
 		// Grafico
 		chart = new Chart(ctx, {
@@ -874,4 +863,9 @@ function dadosCharts(total, dados) {
 		porcentual[i] = Number(((dados[i] / total) * 100).toFixed(2))
 	}
 	return porcentual
+}
+
+
+function pieChart(){
+
 }

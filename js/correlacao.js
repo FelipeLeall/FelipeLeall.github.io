@@ -158,21 +158,7 @@ function apresentaChart(x, y, ctx, a, b) {
                     // // X: ${dataBubble[{x}].value} Y: ${dataBubble[{y}].value}
                     title: function (tooltipItem, data) {
                         return `X , Y`
-                    },
-                    // label: function (tooltipItem, data) {
-                    //     console.log('tooltipItem.yLabel')
-                    //     console.log(tooltipItem.yLabel)
-                    //     console.log('tooltipItem.xLabel')
-                    //     console.log(tooltipItem.xLabel)
-
-                    //     var label = `X: ${data.datasets[tooltipItem.xLabel.value]} Y: ${data.datasets[tooltipItem.yLabel.value]}`
-
-                    //     // if (label) {
-                    //     //     label += '';
-                    //     // }
-
-                    //     return label;
-                    // }
+                    }
                 }
             },
             title: {
@@ -208,6 +194,10 @@ function apresentaChart(x, y, ctx, a, b) {
     showAtualizar.style.display = 'block'
 }
 
+const regAux = document.querySelector('#regAux')
+const newReg = document.querySelector('#newReg')
+
+
 function atualizar() {
     let nvX = Number(novox.value)
     let nvY = Number(novoy.value)
@@ -229,10 +219,17 @@ function atualizar() {
         })
 
         chart.update()
+
+        regAux.innerHTML = ''
+        newReg.innerHTML = ''
+
+        regAux.innerHTML = `X: ${nvX}`
+        newReg.innerHTML = `Y = A * ${nvX} + B | Y= ${regressao}`
+
     } else {
         alerta.style.display = 'none'
 
-        let regressao = (nvY - (b)) / a
+        let regressao = ((nvY - (b)) / a).toFixed(2)
 
         dataBubble.push({
             x: regressao,
@@ -244,5 +241,11 @@ function atualizar() {
             y: (parseFloat(Math.round(parseFloat(a) * regressao + parseFloat(b), 2)))
         })
         chart.update()
+
+        regAux.innerHTML = ''
+        newReg.innerHTML = ''
+
+        regAux.innerHTML = `Y: ${nvY}`
+        newReg.innerHTML = `30 = A * X + B) | X= ${regressao}`
     }
 }
