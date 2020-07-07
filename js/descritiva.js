@@ -322,7 +322,7 @@ function gerarTabela() {
 		medidasS.innerHTML = ""
 
 		const tesModa = mode(dados)
-		const tesMedia = mean(dados)
+		const tesMedia = (mean(dados)).toFixed(2)
 		const tesMediana = medianDesc(dados)
 		const msResposta = medidaSeparatriz(msValor, numTotalDados, dados)
 
@@ -394,10 +394,16 @@ function gerarTabela() {
 		})
 
 		let intervalo = (max - min) //Intervalo
+		console.log(dados.length)
+		console.log(intervalo)
 
-		let k = Number(Math.sqrt(dados.length).toString()[0]) // raiz quadrada do total dos elementos
+		let k = Number(Math.sqrt(dados.length)) // raiz quadrada do total dos elementos
 		let kmais = k + 1
 		let kmenos = k - 1
+		console.log(k)
+		console.log(kmais)
+		console.log(kmenos)
+
 
 		let inteiro = true
 		let ic
@@ -408,6 +414,7 @@ function gerarTabela() {
 			let ic1 = intervalo / k
 			let ic2 = intervalo / kmais
 			let ic3 = intervalo / kmenos
+
 			if (Number.isInteger(ic1)) {
 				ic = ic1
 				linha = k
@@ -514,7 +521,10 @@ function gerarTabela() {
 		/*============================================== moda,média,medin ======================================== */
 		divRespostas.style.display = 'block'
 
+
 		const tesModa = modaCont(vetRepeat, xiAux)
+		console.log(vetRepeat,xiAux)
+		console.log(tesModa)
 
 		moda.innerHTML = ""
 		mediana.innerHTML = ""
@@ -575,8 +585,6 @@ function gerarTabela() {
 			desvioP = Math.sqrt(desvioP / (numTotalDados - 1))
 			cofVaria = (desvioP / mediaCont) * 100
 		}
-
-		console.log(vetRepeat)
 
 
 		desvioPadrao.innerHTML = ""
@@ -643,9 +651,10 @@ function gerarTabela() {
 		let modaAux = []
 		let moda = []
 
+
 		repetição = dadosVariavel[0]
 		for (let i = 0; i < dadosVariavel.length; i++) {
-			if (repetição < dadosVariavel[i]) {
+			if (repetição == dadosVariavel[i]) {
 				repetição = dadosVariavel[i]
 				modaAux.push(i)
 			}
