@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Network Statistic</title>
-    <link rel="icon" href="img/Logo Branco.png">
+    <link rel="icon" href="./img/Icone.png">
 
     <!-- CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -106,10 +106,9 @@
                 </diV>
 
                 <div class="col-md-4 col-sm-10" id="medidasDiv">
-                    <div onchange="carregar()">
+                    <div oninput="carregar()">
                         <label for="exampleFormControlSelect1"><strong>Medidas Separatriz</strong></label>
-                        <select class="form-control" id="msSelect">
-                            <!-- <option value="Escolha">Escolha</option> -->
+                        <select class="form-control" id="msSelect" value="Quartil">
                             <option value="Quartil">Quartil</option>
                             <option value="Quintil">Quintil</option>
                             <option value="Decil">Decil</option>
@@ -186,7 +185,7 @@
                         </div>
 
                         <div class="col-md-12 col-sm-12 align-self-center"" id="chartConfig">
-                            <div class="chart-wrapper">
+                            <div id="oChartDelas" class="chart-wrapper">
                                 <canvas id="oChartDasBonecas"></canvas>
                             </div>
                         </div>

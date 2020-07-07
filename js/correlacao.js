@@ -58,7 +58,7 @@ function correlacao() {
     console.log(r)
     console.log(a)
     console.log(b)
-    correResult
+    
     // Formula da Regressao
     // y = a*x+b
     let forcaCorre
@@ -140,12 +140,14 @@ function apresentaChart(x, y, ctx, a, b) {
             datasets: [{
                 type: 'bubble',
                 data: dataBubble,
-                backgrouncolor: 'rgba(0, 255, 0)',
+                backgroundColor:'rgba(223, 133, 38, 1)',
+                borderColor:'rgba(223, 133, 38, 1)',
                 borderWidth: 1
             }, {
                 type: 'line',
-                backgrouncolor: 'rgba(0, 0, 255)',
                 data: regLine,
+                backgroundColor:'rgba(55, 148, 110, 1)',
+                borderColor:'rgba(55, 148, 110, 1)',
                 fill: false,
                 pointRadius: 0
             }]
@@ -214,7 +216,7 @@ function atualizar() {
     } else if (!nvY) {
         alerta.style.display = 'none'
 
-        let regressao = a * nvX + b
+        let regressao = (a * nvX + b).toFixed(2)
 
         dataBubble.push({
             x: nvX,

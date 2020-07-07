@@ -16,19 +16,28 @@ const amostra = document.querySelector('#Amostra')
 const medidasS = document.querySelector('#medidasS')
 const divRespostas = document.querySelector('#divRespostas')
 
+
 /*=========================================================================================================
 ================================================== Charts =================================================
 =========================================================================================================== */
-let chart
+let chart = undefined
 let colorsChart = ['rgba(255, 99, 132, 1)',
 	'rgba(54, 162, 235, 1)',
 	'rgba(255, 206, 86, 1)',
 	'rgba(75, 192, 192, 1)',
 	'rgba(153, 102, 255, 1)',
-	'rgba(255, 159, 64, 1)'
+	'rgba(255, 159, 64, 1)',
+	'rgba(221, 91, 155, 1)',
+	'rgba(55, 148, 110, 1)',
+	'rgba(95, 205, 228, 1)',
+	'rgba(153, 229, 80, 1)',
+	'rgb(118, 66, 138, 1)'
 ]
 
+
+
 // Contexto do gráfico
+const oChartDelas = document.querySelector('#oChartDelas')
 const ctx = document.getElementById('oChartDasBonecas')
 Chart.defaults.scale.ticks.beginAtZero = true
 
@@ -64,7 +73,7 @@ const msSelect = document.querySelector('#msSelect')
 const msSpan = document.querySelector('#msSpan')
 const msRange = document.querySelector('#msRange')
 
-var msValor = 0
+var msValor = 50
 
 function carregar() {
 	msRange.addEventListener('input', function () {
@@ -73,15 +82,15 @@ function carregar() {
 			msRange.step = 25
 			msRange.min = 25
 			msRange.max = 100
-		}else if (msSelect.value == "Quintil") {
+		} else if (msSelect.value == "Quintil") {
 			msRange.step = 20
 			msRange.min = 20
 			msRange.max = 100
-		}else if (msSelect.value == "Decil") {
+		} else if (msSelect.value == "Decil") {
 			msRange.step = 10
 			msRange.min = 10
 			msRange.max = 100
-		}else if (msSelect.value == "Porcentil") {
+		} else if (msSelect.value == "Porcentil") {
 			msRange.step = 1
 			msRange.min = 1
 			msRange.max = 100
@@ -123,7 +132,7 @@ function gerarTabela() {
 		}
 	}
 
-	
+
 
 	// Criando objeto para auxiliar na quantitativa ordinal
 	let sep = dados.reduce((obj, item) => {
@@ -141,6 +150,7 @@ function gerarTabela() {
 	let fac = 0
 	let facP = 0
 	let dadosElemRepetidosCharts = dadosCharts(numTotalDados, dadosElemRepetidos)
+
 	/*==========================================================================================================
 	==================================================== Nominal ===============================================
 	============================================================================================================ */
@@ -176,7 +186,6 @@ function gerarTabela() {
 		CoeficienteVaria.innerHTML = ""
 		medidasS.innerHTML = ""
 
-		console.log(msValor)
 		const msResposta = medidaSeparatriz(msValor, numTotalDados, dados)
 		const tesModa = modeString(dados)
 		const tesMediana = median(dados)
@@ -185,6 +194,12 @@ function gerarTabela() {
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
 
+		// oChartDelas.innerHTML = '&nbsp;'
+		// $('#oChartDelas').append('<canvas id=oChartDasBonecas><canvas>')
+		// ctx = $("oChartDasBonecas").get(0).getContext('2d')
+
+
+		chart = undefined
 		// Grafico
 		chart = new Chart(ctx, {
 			//Tipo do gráfico
@@ -201,7 +216,8 @@ function gerarTabela() {
 
 				}]
 
-			}
+			},
+			// options: options
 		})
 
 		/*==========================================================================================================
@@ -253,6 +269,10 @@ function gerarTabela() {
 		mediana.innerHTML += `Mediana:  ${tesMediana}`
 		medidasS.innerHTML += `Medida Separatriz: ${msResposta}`
 
+		// oChartDelas.innerHTML = '&nbsp;'
+		// $('#oChartDelas').append('<canvas id="oChartDasBonecas"><canvas>')
+		// ctx = $("oChartDasBonecas").get(0).getContext('2d')
+
 		// Grafico
 		chart = new Chart(ctx, {
 			//Tipo do gráfico
@@ -268,7 +288,8 @@ function gerarTabela() {
 					borderWidth: 1
 				}]
 
-			}
+			},
+			// options: options
 		})
 
 		// Fim tabela ordinal
@@ -347,6 +368,10 @@ function gerarTabela() {
 		desvioPadrao.innerHTML += `Desvio Padrão : ${desvioP.toFixed(2)}`
 		CoeficienteVaria.innerHTML += `Coeficiente de Variação: ${cofVaria.toFixed(2)}%`
 
+		// oChartDelas.innerHTML = '&nbsp;'
+		// $('#oChartDelas').append('<canvas id=oChartDasBonecas><canvas>')
+		// ctx = $("oChartDasBonecas").get(0).getContext('2d')
+
 		//Grafico
 		chart = new Chart(ctx, {
 			//Tipo do gráfico
@@ -362,7 +387,8 @@ function gerarTabela() {
 					borderWidth: 1
 				}]
 
-			}
+			},
+			// options: options
 		})
 		/*==========================================================================================================
 		==================================================== Continua ===============================================
@@ -562,7 +588,7 @@ function gerarTabela() {
 		}
 
 		console.log(vetRepeat)
-		
+
 
 		desvioPadrao.innerHTML = ""
 		CoeficienteVaria.innerHTML = ""
@@ -570,6 +596,9 @@ function gerarTabela() {
 		desvioPadrao.innerHTML += `Desvio Padrão : ${desvioP.toFixed(2)}`
 		CoeficienteVaria.innerHTML += `Coeficiente de Variação: ${cofVaria.toFixed(2)}%`
 
+		// oChartDelas.innerHTML = '&nbsp;'
+		// $('#oChartDelas').append('<canvas id=oChartDasBonecas><canvas>')
+		// ctx = $("oChartDasBonecas").get(0).getContext('2d')
 
 		let vetRepeatChart = dadosCharts(numTotalDados, vetRepeat)
 		chart = new Chart(ctx, {
@@ -598,7 +627,19 @@ function gerarTabela() {
 							beginAtZero: true
 						}
 					}]
-				}
+				},
+				// tooltips: {
+				// 	callbacks: {
+				// 		label: function (tooltipItem, data) {
+				// 			return data['datasets'][0]['data'][tooltipItem['index']];
+				// 		},
+				// 		afterLabel: function (tooltipItem, data) {
+				// 			var dataset = data['datasets'][0];
+				// 			var percent = Math.round((dataset['data'][tooltipItem['index']] / dataset["_meta"][0]['total']) * 100)
+				// 			return '(' + percent + '%)';
+				// 		}
+				// 	}
+				// }
 			}
 		});
 	}
@@ -787,6 +828,7 @@ function medidaSeparatriz(msValor, totPor, dados) {
 	return msResult
 }
 
+
 // Interação com o botão calcular 
 document.querySelector('#BotaoCalcular').onclick = e => {
 	// chamando a função
@@ -826,10 +868,10 @@ function quickSort(vet, posIni = 0, posFim = vet.length - 1) {
 	}
 }
 
-function dadosCharts(total, dados){
+function dadosCharts(total, dados) {
 	let porcentual = []
-	for(let i=0; i < dados.length; i++){
-		porcentual[i] = Number(((dados[i]/total)*100).toFixed(2))
+	for (let i = 0; i < dados.length; i++) {
+		porcentual[i] = Number(((dados[i] / total) * 100).toFixed(2))
 	}
-	return porcentual	
+	return porcentual
 }
