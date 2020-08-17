@@ -394,15 +394,14 @@ function gerarTabela() {
 		})
 
 		let intervalo = (max - min) //Intervalo
-		console.log(dados.length)
-		console.log(intervalo)
+		// console.log(intervalo)
 
-		let k = Number(Math.sqrt(dados.length)) // raiz quadrada do total dos elementos
+		let k = Number(Math.sqrt(dados.length).toString()[0]) // raiz quadrada do total dos elementos
 		let kmais = k + 1
 		let kmenos = k - 1
-		console.log(k)
-		console.log(kmais)
-		console.log(kmenos)
+		// console.log(k)
+		// console.log(kmais)
+		// console.log(kmenos)
 
 
 		let inteiro = true
